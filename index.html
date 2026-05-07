@@ -1,117 +1,795 @@
-<script>
-/* -------------------------------------------------
-   Helper – restores original button markup after async work
-   ------------------------------------------------- */
-function restoreBtn(btn, originalHtml) {
-  btn.innerHTML = originalHtml;
-  btn.disabled = false;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Amber IT — Customer Receipt Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=IBM+Plex+Mono:wght@400;600&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* -------------------------------------------------
-   Generate receipt (unchanged, just a tiny tweak to
-   force a re‑flow on the receipt wrapper)
-   ------------------------------------------------- */
-function generateReceipt() {
-  const name   = document.getElementById('inp-name').value.trim();
-  const cid    = document.getElementById('inp-cid').value.trim();
-  const pppoe  = document.getElementById('inp-pppoe').value.trim();
-  const agent  = document.getElementById('inp-agent').value.trim();
-  const company= document.getElementById('inp-company').value.trim() || 'Amber IT';
-  const web    = document.getElementById('inp-web').value.trim();
-  const email  = document.getElementById('inp-email').value.trim();
+    :root {
+      --amber: #f0a500;
+      --amber-dark: #c47e00;
+      --amber-deep: #e09800;
+      --bg-page: #161616;
+      --bg-panel: #202020;
+      --bg-input: #141414;
+      --border: #2e2e2e;
+      --text-muted: #666;
+      --text-dim: #444;
+      --text-light: #ccc;
+    }
 
-  if (!name || !cid || !pppoe) {
-    alert('Please fill in Customer Name, CID, and PPPoE Password.');
-    return;
-  }
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--bg-page);
+      min-height: 100vh;
+      padding: 2rem 1rem 3rem;
+      color: #eee;
+    }
 
-  const ref = makeRef(cid);
-  const now = new Date();
-  const dateStr = new Intl.DateTimeFormat('en-GB', {
-    day:'2-digit', month:'short', year:'numeric',
-    hour:'2-digit', minute:'2-digit', hour12:false
-  }).format(now);
+    /* ─── PAGE HEADER ─── */
+    .page-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
 
-  document.getElementById('r-company-name').textContent = company.toUpperCase();
-  document.getElementById('r-web').textContent          = web;
-  document.getElementById('r-email').textContent        = email;
-  document.getElementById('r-avatar').textContent      = getInitials(name);
-  document.getElementById('r-name').textContent        = name;
-  document.getElementById('r-cid').textContent         = cid;
-  document.getElementById('r-router-pass').textContent = 'aitcid' + cid;
-  document.getElementById('r-pppoe-user').textContent   = cid;
-  document.getElementById('r-pppoe-pass').textContent   = pppoe;
-  document.getElementById('r-agent').textContent       = agent || 'Amber IT Staff';
-  document.getElementById('r-date').textContent        = dateStr;
-  document.getElementById('r-ref').textContent         = ref;
-  document.getElementById('r-footer-ref').textContent    = 'Ref: ' + ref;
+    .page-header .logo-wrap {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      border-radius: 12px;
+      padding: 10px 18px;
+      margin-bottom: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
 
-  // hide placeholder, show receipt
-  document.getElementById('placeholder').style.display = 'none';
-  const receipt = document.getElementById('receipt');
-  receipt.classList.add('visible');
-  receipt.style.display = 'block';
-}
+    .page-header img { height: 44px; }
 
-/* -------------------------------------------------
-   Download receipt as PNG (fixed visibility check &
-   restores original button markup)
-   ------------------------------------------------- */
-function downloadImage() {
-  const receipt = document.getElementById('receipt');
-  if (!receipt.classList.contains('visible')) {
-    alert('Please generate a receipt first!');
-    return;
-  }
+    .page-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+    }
 
-  const btn = document.getElementById('btn-dl');
-  const originalHtml = btn.innerHTML;   // store SVG + text
-  btn.innerHTML = 'Saving…';
-  btn.disabled  = true;
+    /* ─── LAYOUT ─── */
+    .app-wrap {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 20px;
+      max-width: 960px;
+      margin: 0 auto;
+      align-items: start;
+    }
 
-  const card = document.getElementById('receipt-card');
-  html2canvas(card, {
-    scale: 2,
-    useCORS: true,
-    allowTaint: true,
-    backgroundColor: '#ffffff',
-    logging: false
-  })
-  .then(canvas => {
-    const name = document.getElementById('r-name').textContent.replace(/\s+/g, '_');
-    const cid  = document.getElementById('r-cid').textContent;
-    const link = document.createElement('a');
-    link.download = `AmberIT_Receipt_${name}_${cid}.png`;
-    link.href = canvas.toDataURL('image/png');
-    link.click();
-    restoreBtn(btn, originalHtml);
-  })
-  .catch(err => {
-    console.error(err);
-    restoreBtn(btn, originalHtml);
-    alert('Download failed – you can still use Print → Save as PDF.');
-  });
-}
+    @media (max-width: 720px) {
+      .app-wrap { grid-template-columns: 1fr; }
+    }
 
-/* -------------------------------------------------
-   Tiny “reset” helper (nice to have)
-   ------------------------------------------------- */
-function resetForm() {
-  document.getElementById('receipt').classList.remove('visible');
-  document.getElementById('receipt').style.display = 'none';
-  document.getElementById('placeholder').style.display = 'flex';
-  // clear inputs – optional
-  document.querySelectorAll('.form-panel input').forEach(i => i.value = '');
-}
+    /* ─── FORM PANEL ─── */
+    .form-panel {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.4rem;
+      position: sticky;
+      top: 1rem;
+    }
 
-/* -------------------------------------------------
-   Existing helpers (unchanged)
-   ------------------------------------------------- */
-function getInitials(name) {
-  if (!name) return '??';
-  return name.trim().split(/\s+/).map(w => w[0].toUpperCase()).slice(0,2).join('');
-}
-function makeRef(cid) {
-  return 'AMB-' + cid + '-' + Date.now().toString().slice(-4);
-}
-</script>
+    .form-panel h2 {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--amber);
+      margin-bottom: 1.1rem;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .field { margin-bottom: 11px; }
+
+    .field label {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      margin-bottom: 5px;
+    }
+
+    .field label .req { color: var(--amber); margin-left: 2px; }
+
+    .field input, .field select {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid #353535;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: 'Nunito', sans-serif;
+      background: var(--bg-input);
+      color: #eee;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      -webkit-appearance: none;
+    }
+
+    .field input::placeholder { color: #3a3a3a; }
+
+    .field input:focus, .field select:focus {
+      outline: none;
+      border-color: var(--amber);
+      box-shadow: 0 0 0 3px rgba(240,165,0,0.1);
+    }
+
+    .field .hint {
+      font-size: 10px;
+      color: var(--text-dim);
+      margin-top: 4px;
+      line-height: 1.5;
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .section-divider {
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--amber);
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      margin: 14px 0 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ─── BUTTONS ─── */
+    .btn-generate {
+      width: 100%;
+      padding: 12px;
+      background: var(--amber);
+      color: #111;
+      border: none;
+      border-radius: 9px;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-generate:hover { background: var(--amber-deep); box-shadow: 0 4px 16px rgba(240,165,0,0.25); }
+    .btn-generate:active { transform: scale(0.98); }
+
+    .btn-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .btn-secondary {
+      padding: 9px 6px;
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      letter-spacing: 0.3px;
+    }
+
+    .btn-secondary:hover { background: #272727; color: #ccc; border-color: #444; }
+    .btn-secondary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .btn-reset:hover { border-color: #c44; color: #f88; }
+
+    /* ─── RECEIPT PANEL ─── */
+    .receipt-panel {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      min-height: 320px;
+    }
+
+    .receipt-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 5rem 1rem;
+      color: #383838;
+      gap: 14px;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .receipt-placeholder p { color: #444; line-height: 1.7; }
+    .receipt-placeholder strong { color: var(--amber); }
+
+    #receipt { display: none; }
+    #receipt.visible { display: block; }
+
+    /* ─── THE RECEIPT CARD (white) ─── */
+    #receipt-card {
+      background: #fff;
+      font-family: 'Nunito', sans-serif;
+      color: #1a1a2e;
+    }
+
+    /* Header */
+    .r-header { background: #111; padding: 1.2rem 1.6rem 1rem; }
+
+    .r-header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #222;
+      margin-bottom: 10px;
+    }
+
+    .r-logo {
+      background: #fff;
+      border-radius: 8px;
+      padding: 5px 10px;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .r-logo img { height: 32px; }
+
+    .r-company-info { text-align: right; }
+
+    .r-company-name {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--amber);
+      letter-spacing: 2px;
+    }
+
+    .r-company-detail { font-size: 10px; color: #555; margin-top: 2px; }
+
+    .r-header-bottom {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+
+    .r-doc-label {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--amber);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .r-doc-meta {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9.5px;
+      color: #555;
+      text-align: right;
+      line-height: 1.6;
+    }
+
+    /* Body */
+    .r-body { padding: 1.2rem 1.6rem; }
+
+    .r-customer-bar {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #fff8ee;
+      border: 1px solid #fde8b0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 16px;
+    }
+
+    .r-avatar {
+      width: 46px; height: 46px;
+      border-radius: 50%;
+      background: var(--amber);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 17px; font-weight: 700;
+      color: #111;
+      flex-shrink: 0;
+    }
+
+    .r-customer-name { font-weight: 700; font-size: 15px; color: #1a1a2e; }
+    .r-customer-sub { font-size: 10.5px; color: #888; font-family: 'IBM Plex Mono', monospace; margin-top: 2px; }
+
+    .r-plan-badge {
+      margin-left: auto;
+      background: #1a1a2e;
+      color: var(--amber);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+
+    .r-section-label {
+      font-size: 9px; font-weight: 700;
+      color: var(--amber-dark);
+      letter-spacing: 2.5px; text-transform: uppercase;
+      margin-bottom: 7px;
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .r-section-label::after { content: ''; flex: 1; height: 1px; background: #eee; }
+
+    .r-info-block {
+      background: #fafafa;
+      border: 1px solid #efefef;
+      border-radius: 9px;
+      padding: 4px 14px;
+      margin-bottom: 14px;
+    }
+
+    .r-info-row {
+      display: flex; justify-content: space-between; align-items: center; padding: 7px 0;
+    }
+
+    .r-info-row:not(:last-child) { border-bottom: 1px solid #f0f0f0; }
+
+    .r-info-key {
+      font-size: 11px; color: #999;
+      display: flex; align-items: center; gap: 7px;
+    }
+
+    .r-info-val {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px; font-weight: 600; color: #1a1a2e;
+    }
+
+    .r-info-val.accent { color: var(--amber-dark); font-size: 14px; }
+
+    /* Contacts */
+    .r-contacts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+
+    .r-contact-chip {
+      background: #fafafa; border: 1px solid #efefef;
+      border-radius: 9px; padding: 9px 12px;
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .r-contact-chip .num {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11.5px; font-weight: 600; color: #1a1a2e;
+    }
+
+    /* WhatsApp */
+    .r-wa-chip {
+      background: #f0fbf0; border: 1px solid #c6e8b8;
+      border-radius: 9px; padding: 10px 14px;
+      display: flex; align-items: center; gap: 12px; margin-bottom: 0;
+    }
+
+    .r-wa-icon {
+      width: 32px; height: 32px; background: #25a244;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+
+    .r-wa-label { font-size: 9px; color: #25a244; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+    .r-wa-num { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #1a4a1a; }
+    .r-wa-note { font-size: 9px; color: #4a8a4a; margin-top: 1px; }
+
+    /* Footer */
+    .r-footer {
+      background: #111; padding: 10px 1.6rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .r-served { font-size: 11px; color: #555; }
+    .r-served strong { color: var(--amber); font-weight: 700; }
+    .r-ref { font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: #3a3a3a; }
+    .r-strip { height: 4px; background: linear-gradient(90deg, #f0a500 0%, #e05500 60%, #f0a500 100%); }
+
+    /* ─── TOAST ─── */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background: #25a244;
+      color: #fff;
+      font-family: 'Nunito', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 10px 20px;
+      border-radius: 30px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s, transform 0.3s;
+      z-index: 999;
+      white-space: nowrap;
+    }
+
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ─── PRINT ─── */
+    @media print {
+      body { background: #fff; padding: 0; }
+      .page-header, .form-panel, .btn-row, .btn-generate { display: none !important; }
+      .app-wrap { display: block; max-width: 100%; }
+      .receipt-panel { border: none; border-radius: 0; background: #fff; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-header">
+    <div class="logo-wrap">
+      <img id="logo-top" src="" alt="Amber IT Logo"/>
+    </div>
+    <div class="page-title">Customer Receipt Generator</div>
+  </div>
+
+  <div class="app-wrap">
+
+    <!-- ══ FORM PANEL ══ -->
+    <div class="form-panel">
+      <h2>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        New Receipt
+      </h2>
+
+      <div class="section-divider">Customer Info</div>
+
+      <div class="field">
+        <label>Customer Name <span class="req">*</span></label>
+        <input type="text" id="inp-name" placeholder="e.g. Md. Rahim Uddin"/>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Customer ID (CID) <span class="req">*</span></label>
+          <input type="text" id="inp-cid" placeholder="e.g. 330538"/>
+          <div class="hint">PPPoE user = CID<br>Router pass = aitcid + CID</div>
+        </div>
+        <div class="field">
+          <label>PPPoE Password <span class="req">*</span></label>
+          <input type="text" id="inp-pppoe" placeholder="e.g. tapgse"/>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Package / Plan</label>
+        <input type="text" id="inp-plan" placeholder="e.g. 30 Mbps Unlimited"/>
+      </div>
+
+      <div class="section-divider">Staff</div>
+
+      <div class="field">
+        <label>Served By</label>
+        <input type="text" id="inp-agent" placeholder="Your name or employee ID"/>
+      </div>
+
+      <button class="btn-generate" onclick="generateReceipt()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        GENERATE RECEIPT
+      </button>
+
+      <div class="btn-row">
+        <button class="btn-secondary" id="btn-dl" onclick="downloadImage()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Save PNG
+        </button>
+        <button class="btn-secondary" onclick="window.print()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Print/PDF
+        </button>
+        <button class="btn-secondary btn-reset" onclick="resetForm()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.78"/></svg>
+          Reset
+        </button>
+      </div>
+    </div>
+
+    <!-- ══ RECEIPT PANEL ══ -->
+    <div class="receipt-panel">
+      <div class="receipt-placeholder" id="placeholder">
+        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="1.2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        <p>Fill the form and click<br><strong>Generate Receipt</strong></p>
+        <p style="font-size:11px;color:#2e2e2e;">Fields marked <span style="color:#c47e00">*</span> are required</p>
+      </div>
+
+      <div id="receipt">
+        <div id="receipt-card">
+
+          <!-- RECEIPT HEADER -->
+          <div class="r-header">
+            <div class="r-header-top">
+              <div class="r-logo">
+                <img id="logo-receipt" src="" alt="Amber IT"/>
+              </div>
+              <div class="r-company-info">
+                <div class="r-company-name" id="r-company-name">AMBER IT</div>
+                <div class="r-company-detail" id="r-web">www.amber-it.com</div>
+                <div class="r-company-detail" id="r-email">support@amber-it.com</div>
+                <div class="r-company-detail" id="r-address">Dhaka, Bangladesh</div>
+              </div>
+            </div>
+            <div class="r-header-bottom">
+              <div class="r-doc-label">Customer Receipt</div>
+              <div class="r-doc-meta">
+                <div id="r-date">—</div>
+                <div>Ref: <span id="r-ref">—</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RECEIPT BODY -->
+          <div class="r-body">
+
+            <!-- Customer bar -->
+            <div class="r-customer-bar">
+              <div class="r-avatar" id="r-avatar">??</div>
+              <div>
+                <div class="r-customer-name" id="r-name">—</div>
+                <div class="r-customer-sub">CID: <span id="r-cid">—</span></div>
+              </div>
+              <div class="r-plan-badge" id="r-plan-badge" style="display:none;">—</div>
+            </div>
+
+            <!-- Router Login -->
+            <div class="r-section-label">Router Login</div>
+            <div class="r-info-block">
+              <div class="r-info-row">
+                <span class="r-info-key">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                  Password
+                </span>
+                <span class="r-info-val accent" id="r-router-pass">—</span>
+              </div>
+            </div>
+
+            <!-- PPPoE Info -->
+            <div class="r-section-label">PPPoE Information</div>
+            <div class="r-info-block">
+              <div class="r-info-row">
+                <span class="r-info-key">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  Username
+                </span>
+                <span class="r-info-val" id="r-pppoe-user">—</span>
+              </div>
+              <div class="r-info-row">
+                <span class="r-info-key">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+                  Password
+                </span>
+                <span class="r-info-val" id="r-pppoe-pass">—</span>
+              </div>
+            </div>
+
+            <!-- Call Centre -->
+            <div class="r-section-label">Call Centre</div>
+            <div class="r-contacts-grid">
+              <div class="r-contact-chip">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f0a500" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 012 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                <div class="num" id="r-phone1">09611-123123</div>
+              </div>
+              <div class="r-contact-chip">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f0a500" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 012 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                <div class="num" id="r-phone2">09611-200700</div>
+              </div>
+            </div>
+
+            <!-- WhatsApp -->
+            <div class="r-section-label">WhatsApp Complaint</div>
+            <div class="r-wa-chip">
+              <div class="r-wa-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2.546 21.5l4.432-.872A9.96 9.96 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18a8 8 0 01-4.078-1.122l-.292-.174-3.03.596.617-2.966-.19-.305A8 8 0 1112 20z"/></svg>
+              </div>
+              <div>
+                <div class="r-wa-label">WhatsApp Complaint</div>
+                <div class="r-wa-num" id="r-wa-num">01313488188</div>
+                <div class="r-wa-note">Text only — no voice calls</div>
+              </div>
+            </div>
+
+          </div><!-- /.r-body -->
+
+          <!-- RECEIPT FOOTER -->
+          <div class="r-footer">
+            <div class="r-served">Served by: <strong id="r-agent">—</strong></div>
+            <div class="r-ref" id="r-footer-ref">—</div>
+          </div>
+          <div class="r-strip"></div>
+
+        </div><!-- /#receipt-card -->
+      </div><!-- /#receipt -->
+    </div><!-- /.receipt-panel -->
+
+  </div><!-- /.app-wrap -->
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ─── LOGO ─────────────────────────────────────────────────────────────────
+    var LOGO_B64 = 'data:image/jpeg;base64,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';
+
+    document.getElementById('logo-top').src     = LOGO_B64;
+    document.getElementById('logo-receipt').src = LOGO_B64;
+
+    // ─── HELPERS ──────────────────────────────────────────────────────────────
+    function getInitials(name) {
+      if (!name) return '??';
+      return name.trim().split(/\s+/).map(function(w){ return w[0].toUpperCase(); }).slice(0, 2).join('');
+    }
+
+    function makeRef(cid) {
+      var ts = Date.now().toString().slice(-5);
+      return 'AMB-' + cid + '-' + ts;
+    }
+
+    function showToast(msg, color) {
+      var t = document.getElementById('toast');
+      t.textContent = msg;
+      t.style.background = color || '#25a244';
+      t.classList.add('show');
+      setTimeout(function() { t.classList.remove('show'); }, 2800);
+    }
+
+    function val(id) {
+      return document.getElementById(id).value.trim();
+    }
+
+    // ─── GENERATE ─────────────────────────────────────────────────────────────
+    function generateReceipt() {
+      var name    = val('inp-name');
+      var cid     = val('inp-cid');
+      var pppoe   = val('inp-pppoe');
+      var plan    = val('inp-plan');
+      var agent   = val('inp-agent');
+      var company = 'Amber IT';
+      var web     = 'www.amber-it.com';
+      var email   = 'support@amber-it.com';
+      var address = 'Dhaka, Bangladesh';
+      var phone1  = '09611-123123';
+      var phone2  = '09611-200700';
+      var wa      = '01313488188';
+
+      // Validation
+      if (!name || !cid || !pppoe) {
+        showToast('⚠ Please fill in Name, CID, and PPPoE Password.', '#c44');
+        return;
+      }
+
+      var ref = makeRef(cid);
+      var now = new Date();
+      var dateStr = now.toLocaleString('en-GB', {
+        day: '2-digit', month: 'short', year: 'numeric',
+        hour: '2-digit', minute: '2-digit'
+      });
+
+      // Populate receipt
+      document.getElementById('r-company-name').textContent = company.toUpperCase();
+      document.getElementById('r-web').textContent          = web;
+      document.getElementById('r-email').textContent        = email;
+      document.getElementById('r-address').textContent      = address;
+      document.getElementById('r-avatar').textContent       = getInitials(name);
+      document.getElementById('r-name').textContent         = name;
+      document.getElementById('r-cid').textContent          = cid;
+      document.getElementById('r-router-pass').textContent  = 'aitcid' + cid;
+      document.getElementById('r-pppoe-user').textContent   = cid;
+      document.getElementById('r-pppoe-pass').textContent   = pppoe;
+      document.getElementById('r-agent').textContent        = agent || 'Amber IT Staff';
+      document.getElementById('r-date').textContent         = dateStr;
+      document.getElementById('r-ref').textContent          = ref;
+      document.getElementById('r-footer-ref').textContent   = 'Ref: ' + ref;
+      document.getElementById('r-phone1').textContent       = phone1;
+      document.getElementById('r-phone2').textContent       = phone2;
+      document.getElementById('r-wa-num').textContent       = wa;
+
+      // Plan badge
+      var badge = document.getElementById('r-plan-badge');
+      if (plan) {
+        badge.textContent    = plan;
+        badge.style.display  = 'block';
+      } else {
+        badge.style.display  = 'none';
+      }
+
+      // Show receipt, hide placeholder
+      document.getElementById('placeholder').style.display = 'none';
+      var receipt = document.getElementById('receipt');
+      receipt.style.display = 'block';
+      receipt.classList.add('visible');
+
+      showToast('✓ Receipt generated!');
+    }
+
+    // ─── DOWNLOAD ─────────────────────────────────────────────────────────────
+    function downloadImage() {
+      var receipt = document.getElementById('receipt');
+      if (!receipt.classList.contains('visible')) {
+        showToast('⚠ Generate a receipt first!', '#c44');
+        return;
+      }
+
+      var btn = document.getElementById('btn-dl');
+      btn.innerHTML = 'Saving…';
+      btn.disabled = true;
+
+      var card = document.getElementById('receipt-card');
+
+      html2canvas(card, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#ffffff',
+        logging: false
+      }).then(function(canvas) {
+        var name = document.getElementById('r-name').textContent.replace(/\s+/g, '_');
+        var cid  = document.getElementById('r-cid').textContent;
+        var link = document.createElement('a');
+        link.download = 'AmberIT_Receipt_' + name + '_' + cid + '.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+
+        // FIX: restore button HTML (was using textContent which strips icons)
+        btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Save PNG';
+        btn.disabled = false;
+        showToast('✓ Image saved!');
+      }).catch(function(err) {
+        console.error(err);
+        btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Save PNG';
+        btn.disabled = false;
+        showToast('⚠ Download failed. Use Print → PDF.', '#c44');
+      });
+    }
+
+    // ─── RESET ────────────────────────────────────────────────────────────────
+    function resetForm() {
+      // Clear customer fields only (keep company defaults)
+      ['inp-name','inp-cid','inp-pppoe','inp-plan','inp-agent'].forEach(function(id) {
+        document.getElementById(id).value = '';
+      });
+
+      // Hide receipt, show placeholder
+      var receipt = document.getElementById('receipt');
+      receipt.classList.remove('visible');
+      receipt.style.display = 'none';
+      document.getElementById('placeholder').style.display = 'flex';
+
+      showToast('Form cleared', '#555');
+    }
+  </script>
+
+</body>
+</html>
