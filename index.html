@@ -465,7 +465,7 @@
           <div class="section-group-title">Staff</div>
           <div class="field">
             <label>Served By</label>
-            <input type="text" id="inp-agent" placeholder="e.g. Mahbub Hossain"/>
+            <input type="text" id="inp-agent" placeholder="Auto-filled from account" readonly style="color:#6a8fd8;cursor:default;"/>
           </div>
         </div>
 
@@ -749,6 +749,19 @@ function showApp() {
   // show admin tab only for admin
   document.getElementById('tab-btn-admin').style.display = currentUser.role === 'admin' ? '' : 'none';
   regenSerial();
+  // Auto-fill Served By from logged-in account
+  const agentInput = document.getElementById('inp-agent');
+  agentInput.value = currentUser.name;
+  if (currentUser.role === 'admin') {
+    agentInput.removeAttribute('readonly');
+    agentInput.style.color = '';
+    agentInput.style.cursor = '';
+    agentInput.placeholder = 'Auto-filled — admin can override';
+  } else {
+    agentInput.setAttribute('readonly','readonly');
+    agentInput.style.color = '#6a8fd8';
+    agentInput.style.cursor = 'default';
+  }
   renderReceiptsTab();
   if (currentUser.role === 'admin') renderUsersTable();
 }
@@ -860,7 +873,9 @@ function onPlanChange() {
 }
 
 function clearForm() {
-  ['inp-name','inp-cid','inp-mobile','inp-pppoe','inp-onu-model','inp-onu-serial','inp-onu-mac','inp-address','inp-agent'].forEach(id=>{ document.getElementById(id).value=''; });
+  ['inp-name','inp-cid','inp-mobile','inp-pppoe','inp-onu-model','inp-onu-serial','inp-onu-mac','inp-address'].forEach(id=>{ document.getElementById(id).value=''; });
+  // Keep agent as logged-in user name
+  document.getElementById('inp-agent').value = currentUser ? currentUser.name : '';
   document.getElementById('inp-plan').value = '';
   document.getElementById('plan-preview').classList.remove('show');
   regenSerial();
@@ -1025,7 +1040,10 @@ async function loadReceipt(i) {
   document.getElementById('inp-onu-serial').value= r.onuSer   || '';
   document.getElementById('inp-onu-mac').value   = r.onuMac   || '';
   document.getElementById('inp-address').value   = r.address  || '';
-  document.getElementById('inp-agent').value     = r.agent    || '';
+  // Only admin can load a different agent name; staff always keeps their own name
+  if (currentUser && currentUser.role === 'admin') {
+    document.getElementById('inp-agent').value = r.agent || '';
+  }
   onPlanChange();
   generateReceipt();
   switchTab('generator', document.getElementById('tab-btn-generator'));
