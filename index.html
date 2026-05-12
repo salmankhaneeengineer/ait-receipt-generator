@@ -1,315 +1,243 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Amber IT — Receipt System</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=IBM+Plex+Mono:wght@400;600&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --amber: #c0703a;
-      --navy: #0d1b4b;
-      --navy2: #1a3a9a;
-      --dark: #161616;
-      --panel: #1e1e1e;
-      --border: #2a2a2a;
-      --text: #e0e0e0;
-      --muted: #777;
-    }
-    body { font-family:'Nunito',sans-serif; background:var(--dark); min-height:100vh; color:var(--text); }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Amber IT — Receipt System</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=IBM+Plex+Mono:wght@400;600&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--A:#c0703a;--N:#0d1b4b;--N2:#1a3a9a;--D:#161616;--P:#1e1e1e;--B:#2a2a2a;--T:#e0e0e0;--M:#777}
+body{font-family:'Nunito',sans-serif;background:var(--D);min-height:100vh;color:var(--T)}
 
-    /* ═══════════════ LOGIN SCREEN ═══════════════ */
-    #login-screen {
-      display:flex; align-items:center; justify-content:center;
-      min-height:100vh; padding:1rem;
-    }
-    .login-box {
-      background:var(--panel); border:1px solid var(--border);
-      border-radius:20px; padding:2.5rem 2rem; width:100%; max-width:400px;
-    }
-    .login-logo { text-align:center; margin-bottom:1.8rem; }
-    .login-logo img { height:52px; width:auto; }
-    .login-logo h2 {
-      font-family:'Rajdhani',sans-serif; font-size:22px; font-weight:700;
-      color:#e8eeff; letter-spacing:3px; margin-top:10px;
-    }
-    .login-logo p { font-size:11px; color:#3a5090; letter-spacing:2px; text-transform:uppercase; }
+/* ── LOGIN ── */
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:1rem}
+.login-box{background:var(--P);border:1px solid var(--B);border-radius:20px;padding:2.5rem 2rem;width:100%;max-width:400px}
+.login-logo{text-align:center;margin-bottom:1.8rem}
+.login-logo img{height:52px}
+.login-logo h2{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;color:#e8eeff;letter-spacing:3px;margin-top:10px}
+.login-logo p{font-size:11px;color:#3a5090;letter-spacing:2px;text-transform:uppercase}
+.lf{margin-bottom:14px}
+.lf label{display:block;font-size:11px;font-weight:700;color:var(--M);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+.lf input{width:100%;padding:10px 14px;border:1px solid #333;border-radius:8px;font-size:13px;font-family:'Nunito',sans-serif;background:var(--D);color:var(--T);transition:border-color .15s}
+.lf input:focus{outline:none;border-color:var(--A);box-shadow:0 0 0 3px rgba(192,112,58,.15)}
+.lf input::placeholder{color:#3a3a3a}
+.btn-login{width:100%;padding:12px;background:var(--A);color:#fff;border:none;border-radius:8px;font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;letter-spacing:2px;cursor:pointer;margin-top:6px}
+.btn-login:hover{opacity:.88}
+.login-err{color:#e05555;font-size:12px;text-align:center;margin-top:10px;min-height:18px}
 
-    .login-field { margin-bottom:14px; }
-    .login-field label { display:block; font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:5px; }
-    .login-field input {
-      width:100%; padding:10px 14px; border:1px solid #333; border-radius:8px;
-      font-size:13px; font-family:'Nunito',sans-serif; background:var(--dark); color:var(--text);
-      transition:border-color .15s;
-    }
-    .login-field input:focus { outline:none; border-color:var(--amber); box-shadow:0 0 0 3px rgba(192,112,58,.15); }
-    .login-field input::placeholder { color:#3a3a3a; }
+/* ── APP ── */
+#app-screen{display:none;flex-direction:column;min-height:100vh}
 
-    .btn-login {
-      width:100%; padding:12px; background:var(--amber); color:#fff; border:none; border-radius:8px;
-      font-family:'Rajdhani',sans-serif; font-size:16px; font-weight:700; letter-spacing:2px;
-      cursor:pointer; transition:opacity .15s; margin-top:6px;
-    }
-    .btn-login:hover { opacity:.88; }
-    .login-err { color:#e05555; font-size:12px; text-align:center; margin-top:10px; min-height:18px; }
-    .login-loading { color:#888; font-size:12px; text-align:center; margin-top:10px; }
+/* TOPBAR */
+.topbar{background:var(--N);border-bottom:1px solid #1e3070;padding:.65rem 1.4rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;position:sticky;top:0;z-index:100}
+.topbar-left{display:flex;align-items:center;gap:10px}
+.topbar-logo{height:30px}
+.topbar-title{font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;color:#e8eeff;letter-spacing:2px}
+.topbar-right{display:flex;align-items:center;gap:9px}
+.user-chip{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.06);border:1px solid #1e3070;border-radius:20px;padding:4px 12px}
+.user-avatar{width:24px;height:24px;border-radius:50%;background:var(--A);display:flex;align-items:center;justify-content:center;font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;color:#fff}
+.user-name{font-size:12px;color:#8090c0}
+.user-role{font-size:9px;color:var(--A);font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.btn-logout{padding:5px 12px;background:transparent;color:#e05555;border:1px solid #5a2020;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer}
+.btn-logout:hover{background:rgba(224,85,85,.1)}
 
-    /* ═══════════════ TOP BAR ═══════════════ */
-    #app-screen { display:none; flex-direction:column; min-height:100vh; }
+/* TABS */
+.tab-bar{display:flex;border-bottom:1px solid var(--B);background:var(--P);padding:0 1.4rem}
+.tab-btn{padding:10px 16px;background:transparent;border:none;border-bottom:2px solid transparent;color:var(--M);font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:.5px;display:flex;align-items:center;gap:5px;transition:color .15s,border-color .15s}
+.tab-btn.active{color:var(--A);border-bottom-color:var(--A)}
 
-    .topbar {
-      background:var(--navy); border-bottom:1px solid #1e3070;
-      padding:.7rem 1.5rem; display:flex; align-items:center; justify-content:space-between;
-      flex-wrap:wrap; gap:8px; position:sticky; top:0; z-index:100;
-    }
-    .topbar-left { display:flex; align-items:center; gap:12px; }
-    .topbar-logo { height:32px; width:auto; }
-    .topbar-title { font-family:'Rajdhani',sans-serif; font-size:16px; font-weight:700; color:#e8eeff; letter-spacing:2px; }
+.tab-content{display:none;padding:1.4rem}
+.tab-content.active{display:block}
 
-    .topbar-right { display:flex; align-items:center; gap:10px; }
-    .user-chip {
-      display:flex; align-items:center; gap:7px;
-      background:rgba(255,255,255,.06); border:1px solid #1e3070;
-      border-radius:20px; padding:4px 12px;
-    }
-    .user-avatar {
-      width:24px; height:24px; border-radius:50%; background:var(--amber);
-      display:flex; align-items:center; justify-content:center;
-      font-family:'Rajdhani',sans-serif; font-size:11px; font-weight:700; color:#fff;
-    }
-    .user-name { font-size:12px; color:#8090c0; }
-    .user-role { font-size:9px; color:var(--amber); font-weight:700; text-transform:uppercase; letter-spacing:1px; }
+/* ── LAYOUT ── */
+.app-wrap{display:grid;grid-template-columns:340px 1fr;gap:20px;max-width:1060px;margin:0 auto;align-items:start}
+@media(max-width:800px){.app-wrap{grid-template-columns:1fr}}
 
-    .btn-logout {
-      padding:5px 12px; background:transparent; color:#e05555; border:1px solid #5a2020;
-      border-radius:6px; font-size:11px; font-weight:700; cursor:pointer; transition:background .15s;
-    }
-    .btn-logout:hover { background:rgba(224,85,85,.1); }
+/* FORM */
+.form-panel{background:var(--P);border:1px solid var(--B);border-radius:14px;padding:1.3rem}
+.form-panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:10px;border-bottom:1px solid var(--B)}
+.form-panel-header h2{font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;color:var(--T);letter-spacing:1px;text-transform:uppercase}
+.btn-clear{display:flex;align-items:center;gap:4px;padding:4px 10px;background:transparent;color:#e05555;border:1px solid #5a2020;border-radius:6px;font-size:10px;font-weight:700;cursor:pointer}
+.btn-clear:hover{background:rgba(224,85,85,.1)}
 
-    /* ═══════════════ TABS ═══════════════ */
-    .tab-bar {
-      display:flex; gap:0; border-bottom:1px solid var(--border);
-      background:var(--panel); padding:0 1.5rem;
-    }
-    .tab-btn {
-      padding:10px 18px; background:transparent; border:none; border-bottom:2px solid transparent;
-      color:var(--muted); font-family:'Nunito',sans-serif; font-size:12px; font-weight:700;
-      cursor:pointer; letter-spacing:.5px; transition:color .15s, border-color .15s;
-      display:flex; align-items:center; gap:6px;
-    }
-    .tab-btn.active { color:var(--amber); border-bottom-color:var(--amber); }
-    .tab-btn svg { flex-shrink:0; }
+.sg{margin-bottom:.9rem}
+.sg-title{font-size:9px;font-weight:700;color:var(--A);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.sg-title::after{content:'';flex:1;height:1px;background:var(--B)}
 
-    .tab-content { display:none; padding:1.5rem; }
-    .tab-content.active { display:block; }
+.field{margin-bottom:8px}
+.field label{display:block;font-size:10px;font-weight:700;color:var(--M);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px}
+.field input,.field select{width:100%;padding:7px 11px;border:1px solid #333;border-radius:7px;font-size:12px;font-family:'Nunito',sans-serif;background:var(--D);color:var(--T);transition:border-color .15s;appearance:none}
+.field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:30px;cursor:pointer}
+.field select option{background:#222;color:var(--T)}
+.field input:focus,.field select:focus{outline:none;border-color:var(--A);box-shadow:0 0 0 3px rgba(192,112,58,.15)}
+.field input::placeholder{color:#3a3a3a}
+.field .hint{font-size:9px;color:#444;margin-top:3px;font-family:'IBM Plex Mono',monospace}
+.field input[readonly]{color:#6a8fd8;cursor:default}
 
-    /* ═══════════════ MAIN LAYOUT ═══════════════ */
-    .app-wrap {
-      display:grid; grid-template-columns:340px 1fr; gap:20px; max-width:1060px; margin:0 auto; align-items:start;
-    }
-    @media(max-width:800px){ .app-wrap{ grid-template-columns:1fr; } }
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.serial-row{display:flex;gap:5px;align-items:flex-end}
+.serial-row .field{flex:1;margin-bottom:0}
+.btn-regen{padding:7px 9px;background:var(--D);border:1px solid #333;border-radius:7px;color:var(--M);cursor:pointer;flex-shrink:0;display:flex;align-items:center;transition:color .15s,border-color .15s}
+.btn-regen:hover{color:var(--A);border-color:var(--A)}
 
-    /* ── FORM PANEL ── */
-    .form-panel { background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:1.3rem; }
-    .form-panel-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.1rem; padding-bottom:10px; border-bottom:1px solid var(--border); }
-    .form-panel-header h2 { font-family:'Rajdhani',sans-serif; font-size:15px; font-weight:700; color:var(--text); letter-spacing:1px; text-transform:uppercase; }
+.plan-preview{margin-top:6px;padding:6px 10px;background:var(--D);border:1px solid var(--B);border-radius:7px;display:none}
+.plan-preview.show{display:flex;align-items:center;justify-content:space-between}
+.ppn{font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;color:var(--A);letter-spacing:1px}
+.pps{font-family:'IBM Plex Mono',monospace;font-size:10px;color:#888}
+.ppp{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;color:var(--T)}
 
-    .btn-clear { display:flex; align-items:center; gap:5px; padding:4px 10px; background:transparent; color:#e05555; border:1px solid #5a2020; border-radius:6px; font-size:10px; font-weight:700; cursor:pointer; transition:background .15s; }
-    .btn-clear:hover { background:rgba(224,85,85,.1); }
+.btn-generate{width:100%;padding:10px;background:var(--A);color:#fff;border:none;border-radius:8px;font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;letter-spacing:2px;cursor:pointer;margin-top:4px}
+.btn-generate:hover{opacity:.88}
 
-    .section-group { margin-bottom:1rem; }
-    .section-group-title { font-size:9px; font-weight:700; color:var(--amber); letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; display:flex; align-items:center; gap:6px; }
-    .section-group-title::after { content:''; flex:1; height:1px; background:var(--border); }
+.btn-row{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:7px}
+.btn-sec{padding:7px;background:transparent;color:var(--M);border:1px solid var(--B);border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px}
+.btn-sec:hover{background:#2a2a2a;color:#ccc}
 
-    .field { margin-bottom:9px; }
-    .field label { display:block; font-size:10px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.8px; margin-bottom:4px; }
-    .field input, .field select {
-      width:100%; padding:8px 11px; border:1px solid #333; border-radius:7px;
-      font-size:12px; font-family:'Nunito',sans-serif; background:var(--dark); color:var(--text);
-      transition:border-color .15s; appearance:none;
-    }
-    .field select {
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
-      background-repeat:no-repeat; background-position:right 10px center; padding-right:32px; cursor:pointer;
-    }
-    .field select option { background:#222; color:var(--text); }
-    .field input:focus, .field select:focus { outline:none; border-color:var(--amber); box-shadow:0 0 0 3px rgba(192,112,58,.15); }
-    .field input::placeholder { color:#3a3a3a; }
-    .field .hint { font-size:9px; color:#444; margin-top:3px; font-family:'IBM Plex Mono',monospace; }
+/* RECEIPT PANEL */
+.receipt-panel{background:var(--P);border:1px solid var(--B);border-radius:14px;overflow:hidden}
+.receipt-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3.5rem 1rem;color:#333;gap:10px;font-size:12px;text-align:center}
+#receipt{display:none}
+#receipt.visible{display:block}
 
-    .field-row { display:grid; grid-template-columns:1fr 1fr; gap:7px; }
-    .serial-row { display:flex; gap:5px; align-items:flex-end; }
-    .serial-row .field { flex:1; margin-bottom:0; }
-    .btn-regen { padding:8px 9px; background:#1a1a1a; border:1px solid #333; border-radius:7px; color:var(--muted); cursor:pointer; flex-shrink:0; transition:color .15s, border-color .15s; display:flex; align-items:center; }
-    .btn-regen:hover { color:var(--amber); border-color:var(--amber); }
+/* RECEIPT CARD */
+#receipt-card{background:#f0f4ff;font-family:'Nunito',sans-serif}
+.rh-top{background:var(--N);padding:1.1rem 1.5rem .9rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.rh-logo{display:flex;align-items:center;gap:11px}
+.rh-logo img{height:40px}
+.rh-logo-div{width:1px;height:30px;background:#1e3070}
+.rh-cn{font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;color:#e8eeff;letter-spacing:2px}
+.rh-ct{font-size:9px;color:#6a8fd8;letter-spacing:2px;text-transform:uppercase;margin-top:2px}
+.rh-bc{text-align:right}
+.rh-badge{display:inline-block;background:var(--A);color:#fff;font-size:9px;font-weight:800;letter-spacing:2px;padding:3px 11px;border-radius:20px;text-transform:uppercase}
+.rh-serial{font-family:'IBM Plex Mono',monospace;font-size:9px;color:#3a5090;margin-top:4px}
+.rh-date{font-family:'IBM Plex Mono',monospace;font-size:9px;color:#3a5090;margin-top:2px}
+.rh-stripe{height:3px;background:linear-gradient(90deg,#1a3a9a 0%,var(--A) 50%,#1a3a9a 100%)}
+.rh-cb{background:#e4eaff;border-bottom:1px solid #c8d4f4;padding:5px 1.5rem;display:flex;gap:1.4rem;flex-wrap:wrap;align-items:center}
+.rh-ci{display:flex;align-items:center;gap:5px;font-size:10px;color:#3a5090}
+.rh-cl{color:var(--A);text-decoration:none}
+.rb{padding:1rem 1.5rem}
+.rb-cust{display:flex;align-items:center;gap:11px;background:#fff;border:1px solid #c8d4f4;border-left:4px solid var(--N2);border-radius:9px;padding:9px 13px;margin-bottom:.9rem}
+.rb-av{width:42px;height:42px;border-radius:50%;background:var(--N2);display:flex;align-items:center;justify-content:center;font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;color:#fff;flex-shrink:0}
+.rb-nm{font-weight:800;font-size:14px;color:var(--N)}
+.rb-mt{font-size:9px;color:#6a7090;font-family:'IBM Plex Mono',monospace;margin-top:2px}
+.rb-ad{font-size:9px;color:#8090b0;margin-top:2px}
+.rb-g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:.9rem}
+.rb-g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:.9rem}
+.ic{background:#fff;border:1px solid #c8d4f4;border-radius:8px;overflow:hidden}
+.ic-h{background:var(--N);padding:5px 11px;display:flex;align-items:center;gap:5px}
+.ic-t{font-size:8px;font-weight:700;color:#6a8fd8;letter-spacing:1.5px;text-transform:uppercase}
+.ic-b{padding:7px 11px}
+.ir{display:flex;justify-content:space-between;align-items:center;padding:3px 0}
+.ir:not(:last-child){border-bottom:1px dashed #dde4f8}
+.ik{font-size:9px;color:#8090b0}
+.iv{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;color:var(--N);text-align:right}
+.iv.ac{color:var(--N2);font-size:11px}
+.rb-st{font-size:9px;font-weight:700;color:var(--N2);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:7px}
+.rb-st::after{content:'';flex:1;height:1px;background:#c8d4f4}
+.pc{background:var(--N);border-radius:9px;overflow:hidden;margin-bottom:.9rem}
+.pc-h{background:var(--A);padding:6px 13px;display:flex;align-items:center;gap:6px}
+.pc-ht{font-size:8px;font-weight:700;color:rgba(255,255,255,.85);letter-spacing:2px;text-transform:uppercase}
+.pc-b{padding:10px 13px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:7px}
+.pc-nm{font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;color:#e8eeff;letter-spacing:2px}
+.pc-sp{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--A)}
+.pc-ft{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.pc-ft span{font-size:8px;color:#8090c0;background:#162050;border:1px solid #1e3070;border-radius:4px;padding:2px 6px;font-weight:600}
+.pc-pr{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;color:#e8eeff}
+.pc-pl{font-size:8px;color:#4a6090;letter-spacing:1px;text-transform:uppercase}
+.cg{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:.9rem}
+.cc{background:#fff;border:1px solid #c8d4f4;border-radius:7px;padding:7px 9px;display:flex;align-items:center;gap:6px}
+.ccl{font-size:8px;color:#8090b0;text-transform:uppercase;letter-spacing:.8px}
+.ccn{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;color:var(--N)}
+.wa{background:#f0faf0;border:1px solid #b8e4b8;border-radius:7px;padding:8px 11px;display:flex;align-items:center;gap:9px;margin-bottom:.9rem}
+.wa-d{width:27px;height:27px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.wa-l{font-size:8px;color:#388E3C;text-transform:uppercase;letter-spacing:1px;font-weight:700}
+.wa-n{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;color:#1B5E20}
+.wa-nt{font-size:8px;color:#66BB6A;margin-top:1px}
+.rf{background:var(--N);padding:8px 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:5px}
+.rf-sv{font-size:10px;color:#3a5090}
+.rf-sv strong{color:var(--A);font-weight:700}
+.rf-tg{font-size:9px;color:#1e3070;letter-spacing:1px;font-style:italic}
 
-    .plan-preview { margin-top:6px; padding:6px 10px; background:var(--dark); border:1px solid var(--border); border-radius:7px; display:none; }
-    .plan-preview.show { display:flex; align-items:center; justify-content:space-between; }
-    .plan-preview-name { font-family:'Rajdhani',sans-serif; font-size:12px; font-weight:700; color:var(--amber); letter-spacing:1px; }
-    .plan-preview-speed { font-family:'IBM Plex Mono',monospace; font-size:10px; color:#888; }
-    .plan-preview-price { font-family:'Rajdhani',sans-serif; font-size:13px; font-weight:700; color:var(--text); }
+/* ALL RECEIPTS */
+.r-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:10px}
+.r-header h3{font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;color:var(--T);letter-spacing:1px}
+.search-box{padding:7px 12px;background:var(--P);border:1px solid var(--B);border-radius:7px;font-size:12px;font-family:'Nunito',sans-serif;color:var(--T);width:220px}
+.search-box:focus{outline:none;border-color:var(--A)}
+.search-box::placeholder{color:#444}
+.r-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.rcm{background:var(--P);border:1px solid var(--B);border-radius:12px;padding:12px;transition:border-color .15s}
+.rcm:hover{border-color:#1a3a9a}
+.rcm-h{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+.rcm-av{width:36px;height:36px;border-radius:50%;background:var(--N);display:flex;align-items:center;justify-content:center;font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;color:#6a8fd8;flex-shrink:0}
+.rcm-nm{font-weight:700;font-size:13px;color:var(--T)}
+.rcm-cid{font-size:10px;color:#555;font-family:'IBM Plex Mono',monospace}
+.rcm-plan{display:inline-block;background:#0d1b4b;color:#6a8fd8;font-size:9px;font-weight:700;letter-spacing:1px;padding:2px 8px;border-radius:10px;margin-bottom:6px}
+.rcm-ser{font-family:'IBM Plex Mono',monospace;font-size:9px;color:#444;margin-bottom:8px}
+.rcm-ft{display:flex;align-items:center;justify-content:space-between}
+.rcm-dt{font-size:9px;color:#444;font-family:'IBM Plex Mono',monospace}
+.rcm-ac{display:flex;gap:5px}
+.rb-btn{width:26px;height:26px;border-radius:6px;border:1px solid var(--B);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.rb-btn.load{color:#6a8fd8}.rb-btn.load:hover{background:#0d1b4b;border-color:#1a3a9a}
+.rb-btn.del{color:#e05555}.rb-btn.del:hover{background:rgba(224,85,85,.1);border-color:#5a2020}
+.rb-btn.edit{color:#f0c040}.rb-btn.edit:hover{background:rgba(240,192,64,.1);border-color:#806010}
+.rb-btn.perm{color:#555}.rb-btn.perm.on{color:#f0c040}
+.lock-ic{display:flex;align-items:center;color:#555}
 
-    .btn-generate { width:100%; padding:10px; background:var(--amber); color:#fff; border:none; border-radius:8px; font-family:'Rajdhani',sans-serif; font-size:15px; font-weight:700; letter-spacing:2px; cursor:pointer; transition:opacity .15s; margin-top:4px; }
-    .btn-generate:hover { opacity:.88; }
+/* ADMIN */
+.as{margin-bottom:1.5rem}
+.as h4{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;color:var(--T);letter-spacing:1px;text-transform:uppercase;margin-bottom:1rem;display:flex;align-items:center;gap:7px}
+.as h4::after{content:'';flex:1;height:1px;background:var(--B)}
+.ut{width:100%;border-collapse:collapse}
+.ut th{text-align:left;font-size:10px;font-weight:700;color:var(--M);text-transform:uppercase;letter-spacing:1px;padding:6px 12px;border-bottom:1px solid var(--B)}
+.ut td{padding:9px 12px;border-bottom:1px solid var(--B);font-size:12px;color:var(--T);vertical-align:middle}
+.ut tr:last-child td{border-bottom:none}
+.rb-badge{display:inline-block;font-size:9px;font-weight:700;letter-spacing:1px;padding:2px 8px;border-radius:10px;text-transform:uppercase}
+.rb-badge.admin{background:#2a1a00;color:var(--A);border:1px solid #5a3000}
+.rb-badge.staff{background:#0d1b4b;color:#6a8fd8;border:1px solid #1e3070}
+.sd{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:4px}
+.sd.on{background:#25D366}.sd.off{background:#555}
+.add-form{background:var(--D);border:1px solid var(--B);border-radius:10px;padding:1rem}
+.add-grid{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:8px;align-items:flex-end}
+@media(max-width:700px){.add-grid{grid-template-columns:1fr 1fr}}
+.btn-add{padding:8px 16px;background:var(--A);color:#fff;border:none;border-radius:7px;font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;cursor:pointer;height:36px;white-space:nowrap}
+.btn-add:hover{opacity:.88}
+.btn-rm{padding:3px 8px;background:transparent;color:#e05555;border:1px solid #5a2020;border-radius:5px;font-size:10px;font-weight:700;cursor:pointer;margin-right:4px}
+.btn-rm:hover{background:rgba(224,85,85,.1)}
+.btn-edit-user{padding:3px 8px;background:transparent;color:#6a8fd8;border:1px solid #1e3070;border-radius:5px;font-size:10px;font-weight:700;cursor:pointer}
+.btn-edit-user:hover{background:#0d1b4b}
 
-    .btn-row { display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-top:7px; }
-    .btn-secondary { padding:7px; background:transparent; color:var(--muted); border:1px solid var(--border); border-radius:7px; font-size:11px; font-weight:700; cursor:pointer; transition:background .15s, color .15s; display:flex; align-items:center; justify-content:center; gap:4px; }
-    .btn-secondary:hover { background:#2a2a2a; color:#ccc; }
+/* MODAL */
+#modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;align-items:center;justify-content:center}
+#modal-overlay.show{display:flex}
+.modal{background:var(--P);border:1px solid var(--B);border-radius:16px;padding:1.5rem;width:90%;max-width:460px;max-height:90vh;overflow-y:auto}
+.modal h3{font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;color:var(--T);margin-bottom:1rem;letter-spacing:1px}
+.mf{margin-bottom:10px}
+.mf label{display:block;font-size:10px;font-weight:700;color:var(--M);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px}
+.mf input,.mf select{width:100%;padding:8px 11px;border:1px solid #333;border-radius:7px;font-size:12px;font-family:'Nunito',sans-serif;background:var(--D);color:var(--T)}
+.mf input:focus,.mf select:focus{outline:none;border-color:var(--A)}
+.mf select option{background:#222}
+.modal-btns{display:flex;gap:8px;margin-top:1rem;justify-content:flex-end}
+.btn-mok{padding:8px 20px;background:var(--A);color:#fff;border:none;border-radius:7px;font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;cursor:pointer}
+.btn-mcancel{padding:8px 20px;background:transparent;color:var(--M);border:1px solid var(--B);border-radius:7px;font-size:13px;cursor:pointer}
 
-    /* ── RECEIPT ── */
-    .receipt-panel { background:var(--panel); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
-    .receipt-placeholder { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:3.5rem 1rem; color:#333; gap:10px; font-size:12px; text-align:center; }
-    #receipt { display:none; }
-    #receipt.visible { display:block; }
+/* TOAST */
+#toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(60px);background:var(--N);color:#e8eeff;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;padding:9px 20px;border-radius:30px;border:1px solid #1a3a9a;opacity:0;transition:all .3s ease;z-index:999;pointer-events:none}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-    /* RECEIPT CARD */
-    #receipt-card { background:#f0f4ff; font-family:'Nunito',sans-serif; }
-    .rh-top { background:var(--navy); padding:1.1rem 1.5rem .9rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; }
-    .rh-logo { display:flex; align-items:center; gap:11px; }
-    .rh-logo img { height:40px; width:auto; }
-    .rh-logo-divider { width:1px; height:30px; background:#1e3070; }
-    .rh-company-name { font-family:'Rajdhani',sans-serif; font-size:18px; font-weight:700; color:#e8eeff; letter-spacing:2px; }
-    .rh-company-tagline { font-size:9px; color:#6a8fd8; letter-spacing:2px; text-transform:uppercase; margin-top:2px; }
-    .rh-badge-col { text-align:right; }
-    .rh-badge { display:inline-block; background:var(--amber); color:#fff; font-size:9px; font-weight:800; letter-spacing:2px; padding:3px 11px; border-radius:20px; text-transform:uppercase; }
-    .rh-serial { font-family:'IBM Plex Mono',monospace; font-size:9px; color:#3a5090; margin-top:4px; }
-    .rh-date { font-family:'IBM Plex Mono',monospace; font-size:9px; color:#3a5090; margin-top:2px; }
-    .rh-stripe { height:3px; background:linear-gradient(90deg,#1a3a9a 0%,var(--amber) 50%,#1a3a9a 100%); }
-    .rh-contact-bar { background:#e4eaff; border-bottom:1px solid #c8d4f4; padding:5px 1.5rem; display:flex; gap:1.4rem; flex-wrap:wrap; align-items:center; }
-    .rh-contact-item { display:flex; align-items:center; gap:5px; font-size:10px; color:#3a5090; }
-    .rh-contact-link { color:var(--amber); text-decoration:none; }
-    .rb { padding:1rem 1.5rem; }
-    .rb-customer { display:flex; align-items:center; gap:11px; background:#fff; border:1px solid #c8d4f4; border-left:4px solid var(--navy2); border-radius:9px; padding:9px 13px; margin-bottom:.9rem; }
-    .rb-avatar { width:42px; height:42px; border-radius:50%; background:var(--navy2); display:flex; align-items:center; justify-content:center; font-family:'Rajdhani',sans-serif; font-size:15px; font-weight:700; color:#fff; flex-shrink:0; }
-    .rb-cust-name { font-weight:800; font-size:14px; color:var(--navy); }
-    .rb-cust-meta { font-size:9px; color:#6a7090; font-family:'IBM Plex Mono',monospace; margin-top:2px; }
-    .rb-cust-addr { font-size:9px; color:#8090b0; margin-top:2px; }
-    .rb-grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:.9rem; }
-    .rb-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:.9rem; }
-    .info-card { background:#fff; border:1px solid #c8d4f4; border-radius:8px; overflow:hidden; }
-    .info-card-header { background:var(--navy); padding:5px 11px; display:flex; align-items:center; gap:5px; }
-    .info-card-title { font-size:8px; font-weight:700; color:#6a8fd8; letter-spacing:1.5px; text-transform:uppercase; }
-    .info-card-body { padding:7px 11px; }
-    .info-row { display:flex; justify-content:space-between; align-items:center; padding:3px 0; }
-    .info-row:not(:last-child) { border-bottom:1px dashed #dde4f8; }
-    .info-key { font-size:9px; color:#8090b0; }
-    .info-val { font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:600; color:var(--navy); text-align:right; }
-    .info-val.accent { color:var(--navy2); font-size:11px; }
-    .rb-section-title { font-size:9px; font-weight:700; color:var(--navy2); letter-spacing:2px; text-transform:uppercase; margin-bottom:6px; display:flex; align-items:center; gap:7px; }
-    .rb-section-title::after { content:''; flex:1; height:1px; background:#c8d4f4; }
-    .plan-card { background:var(--navy); border-radius:9px; overflow:hidden; margin-bottom:.9rem; }
-    .plan-card-header { background:var(--amber); padding:6px 13px; display:flex; align-items:center; gap:6px; }
-    .plan-card-header-title { font-size:8px; font-weight:700; color:rgba(255,255,255,.85); letter-spacing:2px; text-transform:uppercase; }
-    .plan-card-body { padding:10px 13px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:7px; }
-    .plan-card-name { font-family:'Rajdhani',sans-serif; font-size:18px; font-weight:700; color:#e8eeff; letter-spacing:2px; }
-    .plan-card-speed { font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--amber); }
-    .plan-card-features { display:flex; flex-wrap:wrap; gap:4px; margin-top:4px; }
-    .plan-feat-tag { font-size:8px; color:#8090c0; background:#162050; border:1px solid #1e3070; border-radius:4px; padding:2px 6px; font-weight:600; }
-    .plan-card-price-col { text-align:right; }
-    .plan-card-price { font-family:'Rajdhani',sans-serif; font-size:22px; font-weight:700; color:#e8eeff; }
-    .plan-card-price-label { font-size:8px; color:#4a6090; letter-spacing:1px; text-transform:uppercase; }
-    .rb-contacts-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:7px; margin-bottom:.9rem; }
-    .contact-chip { background:#fff; border:1px solid #c8d4f4; border-radius:7px; padding:7px 9px; display:flex; align-items:center; gap:6px; }
-    .contact-chip-label { font-size:8px; color:#8090b0; text-transform:uppercase; letter-spacing:.8px; }
-    .contact-chip-num { font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:600; color:var(--navy); }
-    .wa-chip { background:#f0faf0; border:1px solid #b8e4b8; border-radius:7px; padding:8px 11px; display:flex; align-items:center; gap:9px; margin-bottom:.9rem; }
-    .wa-dot { width:27px; height:27px; background:#25D366; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-    .wa-chip-label { font-size:8px; color:#388E3C; text-transform:uppercase; letter-spacing:1px; font-weight:700; }
-    .wa-chip-num { font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600; color:#1B5E20; }
-    .wa-chip-note { font-size:8px; color:#66BB6A; margin-top:1px; }
-    .rf { background:var(--navy); padding:8px 1.5rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:5px; }
-    .rf-served { font-size:10px; color:#3a5090; }
-    .rf-served strong { color:var(--amber); font-weight:700; }
-    .rf-tagline { font-size:9px; color:#1e3070; letter-spacing:1px; font-style:italic; }
-
-    /* ═══════════════ ALL RECEIPTS TAB ═══════════════ */
-    .receipts-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem; flex-wrap:wrap; gap:10px; }
-    .receipts-header h3 { font-family:'Rajdhani',sans-serif; font-size:16px; font-weight:700; color:var(--text); letter-spacing:1px; }
-    .search-box { padding:7px 12px; background:var(--panel); border:1px solid var(--border); border-radius:7px; font-size:12px; font-family:'Nunito',sans-serif; color:var(--text); width:220px; }
-    .search-box:focus { outline:none; border-color:var(--amber); }
-    .search-box::placeholder { color:#444; }
-
-    .receipts-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:12px; }
-    .receipt-card-mini {
-      background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:13px;
-      cursor:pointer; transition:border-color .15s;
-    }
-    .receipt-card-mini:hover { border-color:#1a3a9a; }
-    .rcm-header { display:flex; align-items:center; gap:9px; margin-bottom:9px; }
-    .rcm-avatar { width:36px; height:36px; border-radius:50%; background:var(--navy); display:flex; align-items:center; justify-content:center; font-family:'Rajdhani',sans-serif; font-size:13px; font-weight:700; color:#6a8fd8; flex-shrink:0; }
-    .rcm-name { font-weight:700; font-size:13px; color:var(--text); }
-    .rcm-cid { font-size:10px; color:#555; font-family:'IBM Plex Mono',monospace; }
-    .rcm-plan { display:inline-block; background:#0d1b4b; color:#6a8fd8; font-size:9px; font-weight:700; letter-spacing:1px; padding:2px 8px; border-radius:10px; margin-bottom:7px; }
-    .rcm-serial { font-family:'IBM Plex Mono',monospace; font-size:9px; color:#444; margin-bottom:8px; }
-    .rcm-footer { display:flex; align-items:center; justify-content:space-between; }
-    .rcm-date { font-size:9px; color:#444; font-family:'IBM Plex Mono',monospace; }
-    .rcm-actions { display:flex; gap:5px; }
-    .rcm-btn { width:26px; height:26px; border-radius:6px; border:1px solid var(--border); background:transparent; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .15s; }
-    .rcm-btn.load { color:#6a8fd8; }
-    .rcm-btn.load:hover { background:#0d1b4b; border-color:#1a3a9a; }
-    .rcm-btn.del { color:#e05555; }
-    .rcm-btn.del:hover { background:rgba(224,85,85,.1); border-color:#5a2020; }
-    .rcm-btn.edit { color:#f0c040; }
-    .rcm-btn.edit:hover { background:rgba(240,192,64,.1); border-color:#806010; }
-    .locked-badge { font-size:9px; color:#555; display:flex; align-items:center; gap:3px; }
-
-    /* ═══════════════ ADMIN TAB ═══════════════ */
-    .admin-section { margin-bottom:1.5rem; }
-    .admin-section h4 { font-family:'Rajdhani',sans-serif; font-size:14px; font-weight:700; color:var(--text); letter-spacing:1px; text-transform:uppercase; margin-bottom:1rem; display:flex; align-items:center; gap:7px; }
-    .admin-section h4::after { content:''; flex:1; height:1px; background:var(--border); }
-
-    .users-table { width:100%; border-collapse:collapse; }
-    .users-table th { text-align:left; font-size:10px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:1px; padding:6px 12px; border-bottom:1px solid var(--border); }
-    .users-table td { padding:9px 12px; border-bottom:1px solid var(--border); font-size:12px; color:var(--text); vertical-align:middle; }
-    .users-table tr:last-child td { border-bottom:none; }
-    .role-badge { display:inline-block; font-size:9px; font-weight:700; letter-spacing:1px; padding:2px 8px; border-radius:10px; text-transform:uppercase; }
-    .role-badge.admin { background:#2a1a00; color:var(--amber); border:1px solid #5a3000; }
-    .role-badge.staff { background:#0d1b4b; color:#6a8fd8; border:1px solid #1e3070; }
-    .status-dot { width:8px; height:8px; border-radius:50%; display:inline-block; margin-right:5px; }
-    .status-dot.active { background:#25D366; }
-    .status-dot.inactive { background:#555; }
-
-    .add-user-form { background:var(--dark); border:1px solid var(--border); border-radius:10px; padding:1rem; }
-    .add-user-grid { display:grid; grid-template-columns:1fr 1fr 1fr auto; gap:9px; align-items:flex-end; }
-    @media(max-width:700px){ .add-user-grid{ grid-template-columns:1fr 1fr; } }
-    .btn-add-user { padding:8px 16px; background:var(--amber); color:#fff; border:none; border-radius:7px; font-family:'Rajdhani',sans-serif; font-size:14px; font-weight:700; letter-spacing:1px; cursor:pointer; white-space:nowrap; transition:opacity .15s; height:36px; }
-    .btn-add-user:hover { opacity:.88; }
-    .btn-remove { padding:4px 9px; background:transparent; color:#e05555; border:1px solid #5a2020; border-radius:5px; font-size:10px; font-weight:700; cursor:pointer; transition:background .15s; }
-    .btn-remove:hover { background:rgba(224,85,85,.1); }
-
-    /* ═══════════════ MODAL ═══════════════ */
-    #modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.7); z-index:200; align-items:center; justify-content:center; }
-    #modal-overlay.show { display:flex; }
-    .modal { background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:1.5rem; width:90%; max-width:440px; }
-    .modal h3 { font-family:'Rajdhani',sans-serif; font-size:16px; font-weight:700; color:var(--text); margin-bottom:1rem; letter-spacing:1px; }
-    .modal-field { margin-bottom:10px; }
-    .modal-field label { display:block; font-size:10px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.8px; margin-bottom:4px; }
-    .modal-field input { width:100%; padding:8px 11px; border:1px solid #333; border-radius:7px; font-size:12px; font-family:'Nunito',sans-serif; background:var(--dark); color:var(--text); }
-    .modal-field input:focus { outline:none; border-color:var(--amber); }
-    .modal-buttons { display:flex; gap:8px; margin-top:1rem; justify-content:flex-end; }
-    .btn-modal-ok { padding:8px 20px; background:var(--amber); color:#fff; border:none; border-radius:7px; font-family:'Rajdhani',sans-serif; font-size:14px; font-weight:700; cursor:pointer; }
-    .btn-modal-cancel { padding:8px 20px; background:transparent; color:var(--muted); border:1px solid var(--border); border-radius:7px; font-size:13px; cursor:pointer; }
-
-    /* Toast */
-    #toast { position:fixed; bottom:2rem; left:50%; transform:translateX(-50%) translateY(60px); background:var(--navy); color:#e8eeff; font-family:'Nunito',sans-serif; font-size:12px; font-weight:700; padding:9px 20px; border-radius:30px; border:1px solid #1a3a9a; opacity:0; transition:all .3s ease; z-index:999; pointer-events:none; }
-    #toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
-
-    @media print {
-      body { background:#fff; }
-      #login-screen, .topbar, .tab-bar, .form-panel, .saved-panel, #tab-receipts, #tab-admin { display:none !important; }
-      #app-screen { display:block !important; }
-      #tab-generator { display:block !important; padding:0; }
-      .app-wrap { display:block; }
-      .receipt-panel { border:none; border-radius:0; }
-    }
-  </style>
+@media print{
+  body{background:#fff}
+  #login-screen,.topbar,.tab-bar,.form-panel,#tab-receipts,#tab-admin{display:none!important}
+  #app-screen,#tab-generator{display:block!important}
+  .app-wrap{display:block}
+  .receipt-panel{border:none;border-radius:0}
+}
+</style>
 </head>
 <body>
 
-<!-- ═══════════ LOGIN ═══════════ -->
+<!-- LOGIN -->
 <div id="login-screen">
   <div class="login-box">
     <div class="login-logo">
@@ -317,33 +245,32 @@
       <h2>AMBER IT</h2>
       <p>Receipt Management System</p>
     </div>
-    <div class="login-field">
+    <div class="lf">
       <label>Email Address</label>
-      <input type="email" id="login-email" placeholder="your@email.com" onkeydown="if(event.key==='Enter')doLogin()"/>
+      <input type="email" id="l-email" placeholder="your@email.com" onkeydown="if(event.key==='Enter')doLogin()"/>
     </div>
-    <div class="login-field">
+    <div class="lf">
       <label>Password</label>
-      <input type="password" id="login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/>
+      <input type="password" id="l-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/>
     </div>
     <button class="btn-login" onclick="doLogin()">SIGN IN</button>
     <div class="login-err" id="login-err"></div>
   </div>
 </div>
 
-<!-- ═══════════ APP ═══════════ -->
+<!-- APP -->
 <div id="app-screen">
-
   <div class="topbar">
     <div class="topbar-left">
-      <img class="topbar-logo" id="topbar-logo" src="" alt="Amber IT"/>
+      <img class="topbar-logo" id="topbar-logo" src="" alt=""/>
       <span class="topbar-title">AMBER IT</span>
     </div>
     <div class="topbar-right">
       <div class="user-chip">
-        <div class="user-avatar" id="top-avatar">?</div>
+        <div class="user-avatar" id="top-av">?</div>
         <div>
-          <div class="user-name" id="top-name">—</div>
-          <div class="user-role" id="top-role">—</div>
+          <div class="user-name" id="top-nm">—</div>
+          <div class="user-role" id="top-rl">—</div>
         </div>
       </div>
       <button class="btn-logout" onclick="doLogout()">Sign Out</button>
@@ -351,21 +278,21 @@
   </div>
 
   <div class="tab-bar">
-    <button class="tab-btn active" onclick="switchTab('generator',this)" id="tab-btn-generator">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    <button class="tab-btn active" onclick="switchTab('generator',this)" id="tbb-gen">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
       New Receipt
     </button>
-    <button class="tab-btn" onclick="switchTab('receipts',this)" id="tab-btn-receipts">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-      All Receipts
+    <button class="tab-btn" onclick="switchTab('receipts',this)" id="tbb-rec">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>
+      All Receipts <span id="rec-count-badge" style="background:var(--A);color:#fff;font-size:9px;font-weight:800;padding:1px 6px;border-radius:10px;margin-left:3px;">0</span>
     </button>
-    <button class="tab-btn" onclick="switchTab('admin',this)" id="tab-btn-admin" style="display:none;">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
+    <button class="tab-btn" onclick="switchTab('admin',this)" id="tbb-adm" style="display:none">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
       Admin
     </button>
   </div>
 
-  <!-- GENERATOR TAB -->
+  <!-- TAB: GENERATOR -->
   <div class="tab-content active" id="tab-generator">
     <div class="app-wrap">
 
@@ -373,117 +300,77 @@
         <div class="form-panel-header">
           <h2>✎ New Receipt</h2>
           <button class="btn-clear" onclick="clearForm()">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
             Clear
           </button>
         </div>
 
-        <div class="section-group">
-          <div class="section-group-title">Receipt Serial</div>
+        <div class="sg">
+          <div class="sg-title">Receipt Serial</div>
           <div class="serial-row">
-            <div class="field">
-              <label>Serial No.</label>
-              <input type="text" id="inp-serial" readonly style="color:#6a8fd8;cursor:default;"/>
-            </div>
+            <div class="field"><label>Serial No.</label><input type="text" id="inp-serial" readonly/></div>
             <button class="btn-regen" onclick="regenSerial()" title="New serial">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
             </button>
           </div>
         </div>
 
-        <div class="section-group">
-          <div class="section-group-title">Customer Info</div>
-          <div class="field">
-            <label>Customer Name</label>
-            <input type="text" id="inp-name" placeholder="e.g. Md. Rahim Uddin"/>
-          </div>
+        <div class="sg">
+          <div class="sg-title">Customer Info</div>
+          <div class="field"><label>Customer Name</label><input type="text" id="inp-name" placeholder="e.g. Md. Rahim Uddin"/></div>
           <div class="field-row">
-            <div class="field">
-              <label>Customer ID (CID)</label>
-              <input type="text" id="inp-cid" placeholder="e.g. 330538"/>
-              <div class="hint">Router pass = aitcid+CID</div>
-            </div>
-            <div class="field">
-              <label>Mobile Number</label>
-              <input type="text" id="inp-mobile" placeholder="01XXXXXXXXX"/>
-            </div>
+            <div class="field"><label>CID</label><input type="text" id="inp-cid" placeholder="e.g. 330538"/><div class="hint">Router pass = aitcid+CID</div></div>
+            <div class="field"><label>Mobile Number</label><input type="text" id="inp-mobile" placeholder="01XXXXXXXXX"/></div>
           </div>
-          <div class="field">
-            <label>PPPoE Password</label>
-            <input type="text" id="inp-pppoe" placeholder="e.g. tapgse"/>
-          </div>
+          <div class="field"><label>PPPoE Password</label><input type="text" id="inp-pppoe" placeholder="e.g. tapgse"/></div>
         </div>
 
-        <div class="section-group">
-          <div class="section-group-title">Internet Plan</div>
+        <div class="sg">
+          <div class="sg-title">Internet Plan</div>
           <div class="field">
-            <label>Select Package</label>
+            <label>Package</label>
             <select id="inp-plan" onchange="onPlanChange()">
               <option value="">— Choose a plan —</option>
-              <option value="MINOR+|20 Mbps|500|OTC – 1000 Taka">MINOR+ — 20 Mbps — 500৳/mo</option>
-              <option value="JUNIOR+|30 Mbps|650|OTC Free">JUNIOR+ — 30 Mbps — 650৳/mo</option>
-              <option value="LEARNER+|50 Mbps|800|OTC Free">LEARNER+ — 50 Mbps — 800৳/mo</option>
-              <option value="BASIC+|100 Mbps|1000|OTC Free">BASIC+ — 100 Mbps — 1000৳/mo</option>
-              <option value="PRIMARY+|125 Mbps|1200|OTC Free">PRIMARY+ — 125 Mbps — 1200৳/mo</option>
-              <option value="DOMINANT+|150 Mbps|1500|OTC Free">DOMINANT+ — 150 Mbps — 1500৳/mo</option>
-              <option value="CONFIDENT+|200 Mbps|2000|OTC Free">CONFIDENT+ — 200 Mbps — 2000৳/mo</option>
-              <option value="POSITIVE+|250 Mbps|2500|OTC Free + 1 Public IP">POSITIVE+ — 250 Mbps — 2500৳/mo</option>
+              <option value="MINOR+|20 Mbps|500|OTC – 1000 Taka">MINOR+ — 20 Mbps — 500৳</option>
+              <option value="JUNIOR+|30 Mbps|650|OTC Free">JUNIOR+ — 30 Mbps — 650৳</option>
+              <option value="LEARNER+|50 Mbps|800|OTC Free">LEARNER+ — 50 Mbps — 800৳</option>
+              <option value="BASIC+|100 Mbps|1000|OTC Free">BASIC+ — 100 Mbps — 1000৳</option>
+              <option value="PRIMARY+|125 Mbps|1200|OTC Free">PRIMARY+ — 125 Mbps — 1200৳</option>
+              <option value="DOMINANT+|150 Mbps|1500|OTC Free">DOMINANT+ — 150 Mbps — 1500৳</option>
+              <option value="CONFIDENT+|200 Mbps|2000|OTC Free">CONFIDENT+ — 200 Mbps — 2000৳</option>
+              <option value="POSITIVE+|250 Mbps|2500|OTC Free + 1 Public IP">POSITIVE+ — 250 Mbps — 2500৳</option>
             </select>
             <div class="plan-preview" id="plan-preview">
-              <div>
-                <div class="plan-preview-name" id="pp-name">—</div>
-                <div class="plan-preview-speed" id="pp-speed">—</div>
-              </div>
-              <div class="plan-preview-price" id="pp-price">—</div>
+              <div><div class="ppn" id="pp-name">—</div><div class="pps" id="pp-speed">—</div></div>
+              <div class="ppp" id="pp-price">—</div>
             </div>
           </div>
         </div>
 
-        <div class="section-group">
-          <div class="section-group-title">ONU / Device Info</div>
-          <div class="field">
-            <label>ONU Brand / Model</label>
-            <input type="text" id="inp-onu-model" placeholder="e.g. Huawei EG8145V5"/>
-          </div>
+        <div class="sg">
+          <div class="sg-title">ONU / Device Info</div>
+          <div class="field"><label>ONU Brand / Model</label><input type="text" id="inp-onu-model" placeholder="e.g. Huawei EG8145V5"/></div>
           <div class="field-row">
-            <div class="field">
-              <label>Serial No.</label>
-              <input type="text" id="inp-onu-serial" placeholder="e.g. 48575443A123"/>
-            </div>
-            <div class="field">
-              <label>MAC / GPON</label>
-              <input type="text" id="inp-onu-mac" placeholder="e.g. A8:B1:C3"/>
-            </div>
+            <div class="field"><label>Serial No.</label><input type="text" id="inp-onu-serial" placeholder="48575443A123"/></div>
+            <div class="field"><label>MAC / GPON</label><input type="text" id="inp-onu-mac" placeholder="A8:B1:C3"/></div>
           </div>
-          <div class="field">
-            <label>Installation Address</label>
-            <input type="text" id="inp-address" placeholder="e.g. House 12, Road 4, Mirpur"/>
-          </div>
+          <div class="field"><label>Installation Address</label><input type="text" id="inp-address" placeholder="House 12, Road 4, Mirpur"/></div>
         </div>
 
-        <div class="section-group">
-          <div class="section-group-title">Staff</div>
-          <div class="field">
-            <label>Served By</label>
-            <input type="text" id="inp-agent" placeholder="Auto-filled from account" readonly style="color:#6a8fd8;cursor:default;"/>
-          </div>
+        <div class="sg">
+          <div class="sg-title">Staff</div>
+          <div class="field"><label>Served By</label><input type="text" id="inp-agent" readonly/></div>
         </div>
 
-        <button class="btn-generate" onclick="generateReceipt()">⚡ GENERATE RECEIPT</button>
+        <button class="btn-generate" onclick="generateReceipt()">⚡ GENERATE &amp; SAVE RECEIPT</button>
         <div class="btn-row">
-          <button class="btn-secondary" onclick="saveReceipt()">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-            Save Receipt
-          </button>
-          <button class="btn-secondary" onclick="downloadImage()">
+          <button class="btn-sec" onclick="downloadImage()">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Download Image
           </button>
-        </div>
-        <div class="btn-row" style="margin-top:6px;">
-          <button class="btn-secondary" onclick="window.print()" style="grid-column:1/-1;">
+          <button class="btn-sec" onclick="window.print()">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-            Print / Save as PDF
+            Print / PDF
           </button>
         </div>
       </div>
@@ -492,124 +379,68 @@
       <div class="receipt-panel">
         <div class="receipt-placeholder" id="placeholder">
           <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="1.2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-          <p style="color:#444;font-size:12px;">Fill in the form and click<br><strong style="color:var(--amber);">Generate Receipt</strong></p>
+          <p style="color:#444;font-size:12px;">Fill in the form and click<br><strong style="color:var(--A)">Generate &amp; Save Receipt</strong></p>
         </div>
         <div id="receipt">
           <div id="receipt-card">
             <div class="rh-top">
               <div class="rh-logo">
                 <img id="logo-img" src="" alt="Amber IT"/>
-                <div class="rh-logo-divider"></div>
-                <div>
-                  <div class="rh-company-name">AMBER IT</div>
-                  <div class="rh-company-tagline">Internet Service Provider</div>
-                </div>
+                <div class="rh-logo-div"></div>
+                <div><div class="rh-cn">AMBER IT</div><div class="rh-ct">Internet Service Provider</div></div>
               </div>
-              <div class="rh-badge-col">
+              <div class="rh-bc">
                 <div class="rh-badge">Customer Receipt</div>
                 <div class="rh-serial" id="r-serial">—</div>
                 <div class="rh-date" id="r-date">—</div>
               </div>
             </div>
             <div class="rh-stripe"></div>
-            <div class="rh-contact-bar">
-              <div class="rh-contact-item">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#1a3a9a" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
-                <a class="rh-contact-link" href="https://www.amber-it.com" target="_blank">www.amber-it.com</a>
-              </div>
-              <div class="rh-contact-item">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#1a3a9a" stroke-width="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                <span>info@amber-it.com</span>
-              </div>
+            <div class="rh-cb">
+              <div class="rh-ci"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#1a3a9a" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg><a class="rh-cl" href="https://www.amber-it.com" target="_blank">www.amber-it.com</a></div>
+              <div class="rh-ci"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#1a3a9a" stroke-width="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span>info@amber-it.com</span></div>
             </div>
             <div class="rb">
-              <div class="rb-customer">
-                <div class="rb-avatar" id="r-avatar">??</div>
-                <div style="flex:1;min-width:0;">
-                  <div class="rb-cust-name" id="r-name">—</div>
-                  <div class="rb-cust-meta">CID: <span id="r-cid">—</span> &nbsp;|&nbsp; 📱 <span id="r-mobile">—</span></div>
-                  <div class="rb-cust-addr" id="r-address-line"></div>
+              <div class="rb-cust">
+                <div class="rb-av" id="r-avatar">??</div>
+                <div style="flex:1;min-width:0">
+                  <div class="rb-nm" id="r-name">—</div>
+                  <div class="rb-mt">CID: <span id="r-cid">—</span> &nbsp;|&nbsp; 📱 <span id="r-mobile">—</span></div>
+                  <div class="rb-ad" id="r-addr"></div>
                 </div>
               </div>
-              <div class="rb-section-title">Internet Package</div>
-              <div class="plan-card" id="r-plan-card" style="display:none;">
-                <div class="plan-card-header">
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="2.5"><path d="M1.42 9a16 16 0 0121.16 0"/><path d="M5 12.55a11 11 0 0114.08 0"/><path d="M10.54 16.1a6 6 0 012.92 0"/><line x1="12" y1="20" x2="12.01" y2="20" stroke-width="3"/></svg>
-                  <span class="plan-card-header-title">Selected Package</span>
-                </div>
-                <div class="plan-card-body">
-                  <div>
-                    <div class="plan-card-name" id="r-plan-name">—</div>
-                    <div class="plan-card-speed" id="r-plan-speed">—</div>
-                    <div class="plan-card-features">
-                      <span class="plan-feat-tag">24 Hours Unlimited</span>
-                      <span class="plan-feat-tag">Fiber Optics</span>
-                      <span class="plan-feat-tag">24/7 Customer Care</span>
-                      <span class="plan-feat-tag" id="r-plan-otc">OTC Free</span>
-                    </div>
-                  </div>
-                  <div class="plan-card-price-col">
-                    <div class="plan-card-price" id="r-plan-price">—</div>
-                    <div class="plan-card-price-label">৳ / MONTH incl. VAT</div>
-                  </div>
+              <div class="rb-st">Internet Package</div>
+              <div class="pc" id="r-plan-card" style="display:none">
+                <div class="pc-h"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.8)" stroke-width="2.5"><path d="M1.42 9a16 16 0 0121.16 0"/><path d="M5 12.55a11 11 0 0114.08 0"/><path d="M10.54 16.1a6 6 0 012.92 0"/><line x1="12" y1="20" x2="12.01" y2="20" stroke-width="3"/></svg><span class="pc-ht">Selected Package</span></div>
+                <div class="pc-b">
+                  <div><div class="pc-nm" id="r-plan-name">—</div><div class="pc-sp" id="r-plan-speed">—</div><div class="pc-ft"><span>24 Hours Unlimited</span><span>Fiber Optics</span><span>24/7 Customer Care</span><span id="r-plan-otc">OTC Free</span></div></div>
+                  <div style="text-align:right"><div class="pc-pr" id="r-plan-price">—</div><div class="pc-pl">৳ / MONTH incl. VAT</div></div>
                 </div>
               </div>
-              <div class="rb-section-title">Connection Details</div>
-              <div class="rb-grid-2">
-                <div class="info-card">
-                  <div class="info-card-header">
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#6a8fd8" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-                    <span class="info-card-title">Router Login</span>
-                  </div>
-                  <div class="info-card-body">
-                    <div class="info-row">
-                      <span class="info-key">Password</span>
-                      <span class="info-val accent" id="r-router-pass">—</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="info-card">
-                  <div class="info-card-header">
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#6a8fd8" stroke-width="2.5" stroke-linecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                    <span class="info-card-title">PPPoE Information</span>
-                  </div>
-                  <div class="info-card-body">
-                    <div class="info-row"><span class="info-key">Username</span><span class="info-val" id="r-pppoe-user">—</span></div>
-                    <div class="info-row"><span class="info-key">Password</span><span class="info-val" id="r-pppoe-pass">—</span></div>
-                  </div>
-                </div>
+              <div class="rb-st">Connection Details</div>
+              <div class="rb-g2">
+                <div class="ic"><div class="ic-h"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#6a8fd8" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><span class="ic-t">Router Login</span></div><div class="ic-b"><div class="ir"><span class="ik">Password</span><span class="iv ac" id="r-router-pass">—</span></div></div></div>
+                <div class="ic"><div class="ic-h"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#6a8fd8" stroke-width="2.5" stroke-linecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="ic-t">PPPoE</span></div><div class="ic-b"><div class="ir"><span class="ik">Username</span><span class="iv" id="r-pppoe-user">—</span></div><div class="ir"><span class="ik">Password</span><span class="iv" id="r-pppoe-pass">—</span></div></div></div>
               </div>
-              <div class="rb-section-title">ONU / Device Details</div>
-              <div class="rb-grid-3">
-                <div class="info-card">
-                  <div class="info-card-header"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#6a8fd8" stroke-width="2.5" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg><span class="info-card-title">ONU Model</span></div>
-                  <div class="info-card-body"><div class="info-row"><span class="info-val" id="r-onu-model" style="text-align:left;font-size:10px;">—</span></div></div>
-                </div>
-                <div class="info-card">
-                  <div class="info-card-header"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#6a8fd8" stroke-width="2.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span class="info-card-title">Serial No.</span></div>
-                  <div class="info-card-body"><div class="info-row"><span class="info-val" id="r-onu-serial" style="text-align:left;font-size:9px;word-break:break-all;">—</span></div></div>
-                </div>
-                <div class="info-card">
-                  <div class="info-card-header"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#6a8fd8" stroke-width="2.5" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="3"/></svg><span class="info-card-title">MAC / GPON</span></div>
-                  <div class="info-card-body"><div class="info-row"><span class="info-val" id="r-onu-mac" style="text-align:left;font-size:9px;word-break:break-all;">—</span></div></div>
-                </div>
+              <div class="rb-st">ONU / Device Details</div>
+              <div class="rb-g3">
+                <div class="ic"><div class="ic-h"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#6a8fd8" stroke-width="2.5" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg><span class="ic-t">ONU Model</span></div><div class="ic-b"><div class="ir"><span class="iv" id="r-onu-model" style="text-align:left;font-size:10px">—</span></div></div></div>
+                <div class="ic"><div class="ic-h"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#6a8fd8" stroke-width="2.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span class="ic-t">Serial No.</span></div><div class="ic-b"><div class="ir"><span class="iv" id="r-onu-serial" style="text-align:left;font-size:9px;word-break:break-all">—</span></div></div></div>
+                <div class="ic"><div class="ic-h"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#6a8fd8" stroke-width="2.5" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="3"/></svg><span class="ic-t">MAC / GPON</span></div><div class="ic-b"><div class="ir"><span class="iv" id="r-onu-mac" style="text-align:left;font-size:9px;word-break:break-all">—</span></div></div></div>
               </div>
-              <div class="rb-section-title">Call Centre</div>
-              <div class="rb-contacts-grid">
-                <div class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#1a3a9a" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg><div><div class="contact-chip-label">Helpline 1</div><div class="contact-chip-num">09611-123123</div></div></div>
-                <div class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#1a3a9a" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg><div><div class="contact-chip-label">Helpline 2</div><div class="contact-chip-num">09611-200700</div></div></div>
-                <div class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#1a3a9a" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg><div><div class="contact-chip-label">Support</div><div class="contact-chip-num">24/7 Online</div></div></div>
+              <div class="rb-st">Call Centre</div>
+              <div class="cg">
+                <div class="cc"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#1a3a9a" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg><div><div class="ccl">Helpline 1</div><div class="ccn">09611-123123</div></div></div>
+                <div class="cc"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#1a3a9a" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg><div><div class="ccl">Helpline 2</div><div class="ccn">09611-200700</div></div></div>
+                <div class="cc"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#1a3a9a" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg><div><div class="ccl">Support</div><div class="ccn">24/7 Online</div></div></div>
               </div>
-              <div class="rb-section-title">WhatsApp Complaint</div>
-              <div class="wa-chip">
-                <div class="wa-dot"><svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2.546 21.5l4.432-.872A9.96 9.96 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18a8 8 0 01-4.078-1.122l-.292-.174-3.03.596.617-2.966-.19-.305A8 8 0 1112 20z"/></svg></div>
-                <div><div class="wa-chip-label">Complaint Number (Text Only)</div><div class="wa-chip-num">01313-488188</div><div class="wa-chip-note">Send text messages only — no voice calls</div></div>
+              <div class="rb-st">WhatsApp Complaint</div>
+              <div class="wa">
+                <div class="wa-d"><svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2.546 21.5l4.432-.872A9.96 9.96 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18a8 8 0 01-4.078-1.122l-.292-.174-3.03.596.617-2.966-.19-.305A8 8 0 1112 20z"/></svg></div>
+                <div><div class="wa-l">Complaint Number (Text Only)</div><div class="wa-n">01313-488188</div><div class="wa-nt">Send text messages only — no voice calls</div></div>
               </div>
             </div>
-            <div class="rf">
-              <div class="rf-served">Served by: <strong id="r-agent">—</strong></div>
-              <div class="rf-tagline">Thank you for choosing Amber IT</div>
-            </div>
+            <div class="rf"><div class="rf-sv">Served by: <strong id="r-agent">—</strong></div><div class="rf-tg">Thank you for choosing Amber IT</div></div>
           </div>
         </div>
       </div>
@@ -617,48 +448,37 @@
     </div>
   </div>
 
-  <!-- ALL RECEIPTS TAB -->
+  <!-- TAB: ALL RECEIPTS -->
   <div class="tab-content" id="tab-receipts">
-    <div style="max-width:1060px;margin:0 auto;">
-      <div class="receipts-header">
-        <h3>All Receipts (<span id="receipts-count">0</span>)</h3>
-        <input class="search-box" id="search-box" placeholder="Search by name, CID, serial…" oninput="renderReceiptsTab()"/>
+    <div style="max-width:1060px;margin:0 auto">
+      <div class="r-header">
+        <h3>All Receipts (<span id="r-total">0</span>)</h3>
+        <input class="search-box" id="search-box" placeholder="Search name, CID, serial, mobile…" oninput="renderReceipts()"/>
       </div>
-      <div class="receipts-grid" id="receipts-grid">
-        <p style="color:#444;font-size:13px;grid-column:1/-1;">No receipts saved yet.</p>
-      </div>
+      <div class="r-grid" id="r-grid"><p style="color:#444;font-size:13px;grid-column:1/-1">No receipts yet.</p></div>
     </div>
   </div>
 
-  <!-- ADMIN TAB -->
+  <!-- TAB: ADMIN -->
   <div class="tab-content" id="tab-admin">
-    <div style="max-width:800px;margin:0 auto;">
+    <div style="max-width:840px;margin:0 auto">
 
-      <div class="admin-section">
+      <div class="as">
         <h4>User Accounts</h4>
-        <table class="users-table" id="users-table">
-          <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th></th></tr></thead>
+        <table class="ut">
+          <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead>
           <tbody id="users-tbody"></tbody>
         </table>
       </div>
 
-      <div class="admin-section">
-        <h4>Add New User</h4>
-        <div class="add-user-form">
-          <div class="add-user-grid">
-            <div class="field" style="margin-bottom:0;">
-              <label>Full Name</label>
-              <input type="text" id="new-user-name" placeholder="e.g. Karim Hossain"/>
-            </div>
-            <div class="field" style="margin-bottom:0;">
-              <label>Email</label>
-              <input type="email" id="new-user-email" placeholder="karim@example.com"/>
-            </div>
-            <div class="field" style="margin-bottom:0;">
-              <label>Password</label>
-              <input type="password" id="new-user-pass" placeholder="••••••••"/>
-            </div>
-            <button class="btn-add-user" onclick="addUser()">+ Add</button>
+      <div class="as">
+        <h4>Add New Staff</h4>
+        <div class="add-form">
+          <div class="add-grid">
+            <div class="field" style="margin-bottom:0"><label>Full Name</label><input type="text" id="nu-name" placeholder="e.g. Karim Hossain"/></div>
+            <div class="field" style="margin-bottom:0"><label>Email</label><input type="email" id="nu-email" placeholder="karim@example.com"/></div>
+            <div class="field" style="margin-bottom:0"><label>Password</label><input type="password" id="nu-pass" placeholder="••••••••"/></div>
+            <button class="btn-add" onclick="addUser()">+ Add</button>
           </div>
         </div>
       </div>
@@ -668,232 +488,175 @@
 
 </div><!-- /app-screen -->
 
-<!-- EDIT MODAL -->
+<!-- MODAL: EDIT RECEIPT -->
 <div id="modal-overlay">
-  <div class="modal">
-    <h3>✏️ Edit Receipt</h3>
-    <input type="hidden" id="modal-serial"/>
-    <div class="modal-field"><label>Customer Name</label><input type="text" id="modal-name"/></div>
-    <div class="modal-field"><label>CID</label><input type="text" id="modal-cid"/></div>
-    <div class="modal-field"><label>Mobile</label><input type="text" id="modal-mobile"/></div>
-    <div class="modal-field"><label>PPPoE Password</label><input type="text" id="modal-pppoe"/></div>
-    <div class="modal-field"><label>Address</label><input type="text" id="modal-address"/></div>
-    <div class="modal-field"><label>Served By</label><input type="text" id="modal-agent"/></div>
-    <div class="modal-buttons">
-      <button class="btn-modal-cancel" onclick="closeModal()">Cancel</button>
-      <button class="btn-modal-ok" onclick="saveModal()">Save Changes</button>
+  <div class="modal" id="modal-box">
+    <h3 id="modal-title">Edit</h3>
+    <div id="modal-body"></div>
+    <div class="modal-btns">
+      <button class="btn-mcancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-mok" id="modal-ok-btn" onclick="modalOk()">Save</button>
     </div>
   </div>
 </div>
 
-<div id="toast">✓ Done!</div>
+<div id="toast">✓</div>
 
 <script>
-/* ════════════════════════════════════════
-   LOGO
-════════════════════════════════════════ */
-const LOGO_B64 = 'data:image/jpeg;base64,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';
-['logo-img','login-logo','topbar-logo'].forEach(id => { const el = document.getElementById(id); if(el) el.src = LOGO_B64; });
+/* ════════ LOGO ════════ */
+const LB = 'data:image/jpeg;base64,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';
+['logo-img','login-logo','topbar-logo'].forEach(id=>{const e=document.getElementById(id);if(e)e.src=LB;});
 
-/* ════════════════════════════════════════
-   USERS  (stored in shared localStorage key)
-   Admin hardcoded, extra users stored
-════════════════════════════════════════ */
-const ADMIN = { email:'salman29sep99@gmail.com', password:'Khan63878354', name:'Salman Khan', role:'admin' };
+/* ════════ USER STORE ════════
+   Users kept in localStorage.
+   Admin is hardcoded (never in storage).
+════════════════════════════ */
+const ADMIN = {
+  id:'admin-001',
+  email:'salman29sep99@gmail.com',
+  password:'Khan63878354',
+  name:'Salman Khan',
+  role:'admin',
+  active:true
+};
 
-function getUsers() {
-  try { return JSON.parse(localStorage.getItem('amberit_users') || '[]'); } catch(e) { return []; }
+function getUsers(){
+  try{ return JSON.parse(localStorage.getItem('ait_users')||'[]'); }catch(e){return[];}
 }
-function putUsers(arr) { localStorage.setItem('amberit_users', JSON.stringify(arr)); }
+function putUsers(a){ localStorage.setItem('ait_users', JSON.stringify(a)); }
 
-function findUser(email, password) {
-  if (email === ADMIN.email && password === ADMIN.password) return ADMIN;
-  return getUsers().find(u => u.email === email && u.password === password && u.active) || null;
+function allUsers(){ return [ADMIN, ...getUsers()]; }
+
+function findUser(email, pass){
+  email = email.trim().toLowerCase();
+  if(email===ADMIN.email && pass===ADMIN.password) return ADMIN;
+  return getUsers().find(u=> u.email===email && u.password===pass && u.active) || null;
 }
 
-/* ════════════════════════════════════════
-   SESSION
-════════════════════════════════════════ */
-let currentUser = null;
+/* ════════ SESSION ════════ */
+let CU = null; // current user
 
-function doLogin() {
-  const email = document.getElementById('login-email').value.trim().toLowerCase();
-  const pass  = document.getElementById('login-pass').value;
-  const errEl = document.getElementById('login-err');
-  errEl.textContent = '';
+function doLogin(){
+  const email = document.getElementById('l-email').value;
+  const pass  = document.getElementById('l-pass').value;
+  const err   = document.getElementById('login-err');
+  err.textContent = '';
+  if(!email||!pass){ err.textContent='Please enter email and password.'; return; }
   const user = findUser(email, pass);
-  if (!user) { errEl.textContent = 'Invalid email or password.'; return; }
-  currentUser = user;
-  sessionStorage.setItem('amberit_session', JSON.stringify(user));
-  showApp();
+  if(!user){ err.textContent='Incorrect email or password.'; return; }
+  CU = user;
+  sessionStorage.setItem('ait_sess', JSON.stringify({id:user.id||user.email, email:user.email, name:user.name, role:user.role}));
+  bootApp();
 }
 
-function doLogout() {
-  sessionStorage.removeItem('amberit_session');
-  currentUser = null;
+function doLogout(){
+  sessionStorage.removeItem('ait_sess');
+  CU = null;
   document.getElementById('app-screen').style.display = 'none';
   document.getElementById('login-screen').style.display = 'flex';
-  document.getElementById('login-email').value = '';
-  document.getElementById('login-pass').value = '';
+  document.getElementById('l-email').value='';
+  document.getElementById('l-pass').value='';
+  document.getElementById('login-err').textContent='';
 }
 
-function showApp() {
-  document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('app-screen').style.display = 'flex';
-  document.getElementById('app-screen').style.flexDirection = 'column';
-  // update topbar
-  const initials = currentUser.name.split(' ').map(w=>w[0].toUpperCase()).join('').slice(0,2);
-  document.getElementById('top-avatar').textContent = initials;
-  document.getElementById('top-name').textContent   = currentUser.name;
-  document.getElementById('top-role').textContent   = currentUser.role === 'admin' ? 'Admin' : 'Staff';
-  // show admin tab only for admin
-  document.getElementById('tab-btn-admin').style.display = currentUser.role === 'admin' ? '' : 'none';
+function bootApp(){
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app-screen').style.display='flex';
+  // topbar
+  const ini = CU.name.split(' ').map(w=>w[0].toUpperCase()).join('').slice(0,2);
+  document.getElementById('top-av').textContent = ini;
+  document.getElementById('top-nm').textContent = CU.name;
+  document.getElementById('top-rl').textContent = CU.role==='admin'?'Admin':'Staff';
+  // admin tab
+  document.getElementById('tbb-adm').style.display = CU.role==='admin'?'':'none';
+  // served-by field
+  const ag = document.getElementById('inp-agent');
+  ag.value = CU.name;
+  ag.readOnly = CU.role!=='admin';
+  // fresh serial
   regenSerial();
-  // Auto-fill Served By from logged-in account
-  const agentInput = document.getElementById('inp-agent');
-  agentInput.value = currentUser.name;
-  if (currentUser.role === 'admin') {
-    agentInput.removeAttribute('readonly');
-    agentInput.style.color = '';
-    agentInput.style.cursor = '';
-    agentInput.placeholder = 'Auto-filled — admin can override';
-  } else {
-    agentInput.setAttribute('readonly','readonly');
-    agentInput.style.color = '#6a8fd8';
-    agentInput.style.cursor = 'default';
-  }
-  renderReceiptsTab();
-  if (currentUser.role === 'admin') renderUsersTable();
+  renderReceipts();
+  if(CU.role==='admin') renderUsers();
 }
 
-// Auto-restore session
-(function() {
-  try {
-    const s = JSON.parse(sessionStorage.getItem('amberit_session'));
-    if (s && s.email) { currentUser = s; showApp(); }
-  } catch(e) {}
+// auto-restore
+(function(){
+  try{
+    const s = JSON.parse(sessionStorage.getItem('ait_sess'));
+    if(!s||!s.email) return;
+    const u = findUser(s.email, '___noop___'); // won't match by pass
+    // Re-find properly
+    if(s.email===ADMIN.email){ CU=ADMIN; }
+    else { CU=getUsers().find(u=>u.email===s.email&&u.active)||null; }
+    if(CU) bootApp();
+  }catch(e){}
 })();
 
-/* ════════════════════════════════════════
-   ADMIN — USERS TABLE
-════════════════════════════════════════ */
-function renderUsersTable() {
-  const users = [ADMIN, ...getUsers()];
-  const tbody = document.getElementById('users-tbody');
-  tbody.innerHTML = users.map((u,i) => `
-    <tr>
-      <td>${u.name}</td>
-      <td style="font-family:'IBM Plex Mono',monospace;font-size:11px;">${u.email}</td>
-      <td><span class="role-badge ${u.role}">${u.role}</span></td>
-      <td><span class="status-dot ${u.active !== false ? 'active':'inactive'}"></span>${u.active !== false ? 'Active':'Inactive'}</td>
-      <td>${i === 0 ? '' : `<button class="btn-remove" onclick="removeUser(${i-1})">${u.active!==false?'Deactivate':'Activate'}</button>`}</td>
-    </tr>
-  `).join('');
-}
-
-function addUser() {
-  const name  = document.getElementById('new-user-name').value.trim();
-  const email = document.getElementById('new-user-email').value.trim().toLowerCase();
-  const pass  = document.getElementById('new-user-pass').value;
-  if (!name || !email || !pass) { alert('Please fill all fields.'); return; }
-  if (email === ADMIN.email) { alert('That email is reserved.'); return; }
-  const arr = getUsers();
-  if (arr.find(u => u.email === email)) { alert('User already exists.'); return; }
-  arr.push({ name, email, password:pass, role:'staff', active:true });
-  putUsers(arr);
-  renderUsersTable();
-  document.getElementById('new-user-name').value = '';
-  document.getElementById('new-user-email').value = '';
-  document.getElementById('new-user-pass').value = '';
-  showToast('✓ User added!');
-}
-
-function removeUser(i) {
-  const arr = getUsers();
-  arr[i].active = !arr[i].active;
-  putUsers(arr);
-  renderUsersTable();
-  showToast('User updated');
-}
-
-/* ════════════════════════════════════════
-   RECEIPTS  (shared storage)
-════════════════════════════════════════ */
-async function getReceipts() {
-  try {
-    const r = await window.storage.get('amberit_receipts', true);
-    return r ? JSON.parse(r.value) : [];
-  } catch(e) { return []; }
-}
-
-async function putReceipts(arr) {
-  await window.storage.set('amberit_receipts', JSON.stringify(arr), true);
-}
-
-/* ════════════════════════════════════════
-   TABS
-════════════════════════════════════════ */
-function switchTab(name, btn) {
-  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-  document.getElementById('tab-' + name).classList.add('active');
+/* ════════ TABS ════════ */
+function switchTab(name, btn){
+  document.querySelectorAll('.tab-content').forEach(e=>e.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(e=>e.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
   btn.classList.add('active');
-  if (name === 'receipts') renderReceiptsTab();
-  if (name === 'admin') renderUsersTable();
+  if(name==='receipts') renderReceipts();
+  if(name==='admin')    renderUsers();
 }
 
-/* ════════════════════════════════════════
-   HELPERS
-════════════════════════════════════════ */
-function getInitials(name) {
-  if (!name) return '??';
-  return name.trim().split(/\s+/).map(w=>w[0].toUpperCase()).slice(0,2).join('');
-}
+/* ════════ HELPERS ════════ */
+function initials(n){ if(!n) return '??'; return n.trim().split(/\s+/).map(w=>w[0].toUpperCase()).slice(0,2).join(''); }
 
-function genSerial() {
-  const c = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  let s = 'AIT-';
-  for(let i=0;i<4;i++) s += c[Math.floor(Math.random()*c.length)];
-  s += '-';
-  for(let i=0;i<4;i++) s += c[Math.floor(Math.random()*c.length)];
+function genSerial(){
+  const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let s='AIT-';
+  for(let i=0;i<4;i++) s+=c[Math.floor(Math.random()*c.length)];
+  s+='-';
+  for(let i=0;i<4;i++) s+=c[Math.floor(Math.random()*c.length)];
   return s;
 }
+function regenSerial(){ document.getElementById('inp-serial').value=genSerial(); }
 
-function regenSerial() { document.getElementById('inp-serial').value = genSerial(); }
-
-function onPlanChange() {
-  const sel = document.getElementById('inp-plan');
-  const preview = document.getElementById('plan-preview');
-  if (!sel.value) { preview.classList.remove('show'); return; }
-  const [name, speed, price] = sel.value.split('|');
-  document.getElementById('pp-name').textContent  = name;
-  document.getElementById('pp-speed').textContent = speed;
-  document.getElementById('pp-price').textContent = price + '৳';
-  preview.classList.add('show');
+function onPlanChange(){
+  const sel=document.getElementById('inp-plan');
+  const pv=document.getElementById('plan-preview');
+  if(!sel.value){pv.classList.remove('show');return;}
+  const [nm,sp,pr]=sel.value.split('|');
+  document.getElementById('pp-name').textContent=nm;
+  document.getElementById('pp-speed').textContent=sp;
+  document.getElementById('pp-price').textContent=pr+'৳';
+  pv.classList.add('show');
 }
 
-function clearForm() {
+function clearForm(){
   ['inp-name','inp-cid','inp-mobile','inp-pppoe','inp-onu-model','inp-onu-serial','inp-onu-mac','inp-address'].forEach(id=>{ document.getElementById(id).value=''; });
-  // Keep agent as logged-in user name
-  document.getElementById('inp-agent').value = currentUser ? currentUser.name : '';
-  document.getElementById('inp-plan').value = '';
+  document.getElementById('inp-plan').value='';
   document.getElementById('plan-preview').classList.remove('show');
+  // agent stays as current user name
+  document.getElementById('inp-agent').value = CU ? CU.name : '';
   regenSerial();
-  document.getElementById('receipt').style.display = 'none';
+  // hide receipt preview
+  document.getElementById('receipt').style.display='none';
   document.getElementById('receipt').classList.remove('visible');
-  document.getElementById('placeholder').style.display = '';
-  showToast('Form cleared');
+  document.getElementById('placeholder').style.display='';
 }
 
-/* ════════════════════════════════════════
-   GENERATE RECEIPT
-════════════════════════════════════════ */
-function generateReceipt() {
+/* ════════ RECEIPTS STORE (shared storage) ════════ */
+async function getReceipts(){
+  try{
+    const r = await window.storage.get('ait_receipts', true);
+    return r ? JSON.parse(r.value) : [];
+  }catch(e){ return []; }
+}
+async function putReceipts(arr){
+  await window.storage.set('ait_receipts', JSON.stringify(arr), true);
+}
+
+/* ════════ GENERATE + AUTO-SAVE + AUTO-CLEAR ════════ */
+async function generateReceipt(){
   const name     = document.getElementById('inp-name').value.trim();
   const cid      = document.getElementById('inp-cid').value.trim();
   const mobile   = document.getElementById('inp-mobile').value.trim();
   const pppoe    = document.getElementById('inp-pppoe').value.trim();
-  const agent    = document.getElementById('inp-agent').value.trim();
+  const agent    = document.getElementById('inp-agent').value.trim() || CU.name;
   const onuModel = document.getElementById('inp-onu-model').value.trim();
   const onuSer   = document.getElementById('inp-onu-serial').value.trim();
   const onuMac   = document.getElementById('inp-onu-mac').value.trim();
@@ -901,236 +664,301 @@ function generateReceipt() {
   const serial   = document.getElementById('inp-serial').value.trim();
   const planVal  = document.getElementById('inp-plan').value;
 
-  if (!name || !cid || !pppoe) { alert('Please fill in Customer Name, CID, and PPPoE Password.'); return; }
+  if(!name||!cid||!pppoe){ alert('Please fill in Customer Name, CID, and PPPoE Password.'); return; }
 
-  document.getElementById('r-avatar').textContent      = getInitials(name);
+  // Fill receipt card
+  document.getElementById('r-avatar').textContent      = initials(name);
   document.getElementById('r-name').textContent        = name;
   document.getElementById('r-cid').textContent         = cid;
-  document.getElementById('r-mobile').textContent      = mobile || 'N/A';
-  document.getElementById('r-router-pass').textContent = 'aitcid' + cid;
+  document.getElementById('r-mobile').textContent      = mobile||'N/A';
+  document.getElementById('r-router-pass').textContent = 'aitcid'+cid;
   document.getElementById('r-pppoe-user').textContent  = cid;
   document.getElementById('r-pppoe-pass').textContent  = pppoe;
-  document.getElementById('r-agent').textContent       = agent || 'Amber IT Staff';
-  document.getElementById('r-serial').textContent      = serial ? '# ' + serial : '';
-  document.getElementById('r-onu-model').textContent   = onuModel || '—';
-  document.getElementById('r-onu-serial').textContent  = onuSer   || '—';
-  document.getElementById('r-onu-mac').textContent     = onuMac   || '—';
-  document.getElementById('r-address-line').textContent = address ? '📍 ' + address : '';
+  document.getElementById('r-agent').textContent       = agent;
+  document.getElementById('r-serial').textContent      = serial?'# '+serial:'';
+  document.getElementById('r-onu-model').textContent   = onuModel||'—';
+  document.getElementById('r-onu-serial').textContent  = onuSer||'—';
+  document.getElementById('r-onu-mac').textContent     = onuMac||'—';
+  document.getElementById('r-addr').textContent        = address?'📍 '+address:'';
 
-  const planCard = document.getElementById('r-plan-card');
-  if (planVal) {
-    const [pName, pSpeed, pPrice, pOtc] = planVal.split('|');
-    document.getElementById('r-plan-name').textContent  = pName;
-    document.getElementById('r-plan-speed').textContent = pSpeed;
-    document.getElementById('r-plan-price').textContent = pPrice;
-    document.getElementById('r-plan-otc').textContent   = pOtc || 'OTC Free';
-    planCard.style.display = 'block';
-  } else { planCard.style.display = 'none'; }
+  const pc = document.getElementById('r-plan-card');
+  if(planVal){
+    const [pN,pS,pP,pO]=planVal.split('|');
+    document.getElementById('r-plan-name').textContent  = pN;
+    document.getElementById('r-plan-speed').textContent = pS;
+    document.getElementById('r-plan-price').textContent = pP;
+    document.getElementById('r-plan-otc').textContent   = pO||'OTC Free';
+    pc.style.display='block';
+  } else { pc.style.display='none'; }
 
   const now = new Date();
-  document.getElementById('r-date').textContent = now.toLocaleString('en-GB',{ day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+  document.getElementById('r-date').textContent = now.toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
 
-  document.getElementById('placeholder').style.display = 'none';
-  const receipt = document.getElementById('receipt');
-  receipt.classList.add('visible');
-  receipt.style.display = 'block';
-}
+  document.getElementById('placeholder').style.display='none';
+  const rec = document.getElementById('receipt');
+  rec.classList.add('visible');
+  rec.style.display='block';
 
-/* ════════════════════════════════════════
-   SAVE RECEIPT
-════════════════════════════════════════ */
-async function saveReceipt() {
-  if (!document.getElementById('receipt').classList.contains('visible')) { alert('Generate a receipt first.'); return; }
-  const name   = document.getElementById('inp-name').value.trim();
-  const cid    = document.getElementById('inp-cid').value.trim();
-  if (!name || !cid) { alert('Generate a receipt first.'); return; }
-  const planVal = document.getElementById('inp-plan').value;
+  // ── AUTO SAVE ──
   const record = {
-    serial:   document.getElementById('inp-serial').value.trim(),
-    name, cid,
-    mobile:   document.getElementById('inp-mobile').value.trim(),
-    pppoe:    document.getElementById('inp-pppoe').value.trim(),
-    plan:     planVal ? planVal.split('|')[0] : '',
-    planVal,
-    onuModel: document.getElementById('inp-onu-model').value.trim(),
-    onuSer:   document.getElementById('inp-onu-serial').value.trim(),
-    onuMac:   document.getElementById('inp-onu-mac').value.trim(),
-    address:  document.getElementById('inp-address').value.trim(),
-    agent:    document.getElementById('inp-agent').value.trim(),
-    savedBy:  currentUser.name,
-    savedAt:  new Date().toISOString(),
+    serial, name, cid, mobile, pppoe,
+    plan: planVal?planVal.split('|')[0]:'', planVal,
+    onuModel, onuSer, onuMac, address, agent,
+    savedBy: CU.name,
+    savedAt: now.toISOString(),
     editPermission: false
   };
   const arr = await getReceipts();
-  const idx = arr.findIndex(r => r.serial && r.serial === record.serial);
-  if (idx >= 0) arr[idx] = record; else arr.unshift(record);
+  const idx = arr.findIndex(r=>r.serial&&r.serial===serial);
+  if(idx>=0) arr[idx]=record; else arr.unshift(record);
   await putReceipts(arr);
-  renderReceiptsTab();
-  showToast('✓ Receipt saved!');
+  updateBadge(arr.length);
+  showToast('✓ Receipt saved! Form cleared for next customer.');
+
+  // ── AUTO CLEAR form after short delay so user can see the receipt ──
+  setTimeout(()=>{
+    clearForm();
+  }, 1800);
 }
 
-/* ════════════════════════════════════════
-   ALL RECEIPTS TAB
-════════════════════════════════════════ */
-async function renderReceiptsTab() {
-  const q   = (document.getElementById('search-box')?.value || '').toLowerCase();
+function updateBadge(n){
+  document.getElementById('rec-count-badge').textContent=n;
+  document.getElementById('r-total').textContent=n;
+}
+
+/* ════════ RENDER ALL RECEIPTS ════════ */
+async function renderReceipts(){
+  const q   = (document.getElementById('search-box')?.value||'').toLowerCase();
   const arr = await getReceipts();
-  const filtered = arr.filter(r =>
-    (r.name||'').toLowerCase().includes(q) ||
-    (r.cid||'').toLowerCase().includes(q) ||
-    (r.serial||'').toLowerCase().includes(q) ||
-    (r.mobile||'').toLowerCase().includes(q)
+  updateBadge(arr.length);
+  const filtered = arr.filter(r=>
+    (r.name||'').toLowerCase().includes(q)||
+    (r.cid||'').toLowerCase().includes(q)||
+    (r.serial||'').toLowerCase().includes(q)||
+    (r.mobile||'').toLowerCase().includes(q)||
+    (r.agent||'').toLowerCase().includes(q)
   );
-  document.getElementById('receipts-count').textContent = arr.length;
-  const grid = document.getElementById('receipts-grid');
-  if (filtered.length === 0) { grid.innerHTML = '<p style="color:#444;font-size:13px;grid-column:1/-1;">No receipts found.</p>'; return; }
-  const isAdmin = currentUser?.role === 'admin';
-  grid.innerHTML = filtered.map((r,i) => {
-    const canEdit = isAdmin || r.editPermission;
-    const realIdx = arr.indexOf(r);
-    return `
-    <div class="receipt-card-mini">
-      <div class="rcm-header">
-        <div class="rcm-avatar">${getInitials(r.name)}</div>
-        <div>
-          <div class="rcm-name">${r.name}</div>
-          <div class="rcm-cid">CID: ${r.cid} &nbsp;|&nbsp; 📱 ${r.mobile||'N/A'}</div>
-        </div>
+  const grid = document.getElementById('r-grid');
+  if(!filtered.length){ grid.innerHTML='<p style="color:#444;font-size:13px;grid-column:1/-1">No receipts found.</p>'; return; }
+  const isAdmin = CU?.role==='admin';
+  grid.innerHTML = filtered.map(r=>{
+    const ri = arr.indexOf(r);
+    const canEdit = isAdmin||r.editPermission;
+    return `<div class="rcm">
+      <div class="rcm-h">
+        <div class="rcm-av">${initials(r.name)}</div>
+        <div><div class="rcm-nm">${r.name}</div><div class="rcm-cid">CID: ${r.cid} | 📱 ${r.mobile||'N/A'}</div></div>
       </div>
-      ${r.plan ? `<div class="rcm-plan">${r.plan}</div>` : ''}
-      <div class="rcm-serial">${r.serial ? '# '+r.serial : ''}</div>
-      <div class="rcm-footer">
+      ${r.plan?`<div class="rcm-plan">${r.plan}</div>`:''}
+      <div class="rcm-ser">${r.serial?'# '+r.serial:''}</div>
+      <div class="rcm-ft">
         <div>
-          <div class="rcm-date">${r.savedBy ? 'By '+r.savedBy : ''}</div>
-          <div class="rcm-date">${r.savedAt ? new Date(r.savedAt).toLocaleDateString('en-GB') : ''}</div>
+          <div class="rcm-dt">${r.savedBy?'By '+r.savedBy:''}</div>
+          <div class="rcm-dt">${r.savedAt?new Date(r.savedAt).toLocaleDateString('en-GB'):''}</div>
         </div>
-        <div class="rcm-actions">
-          <button class="rcm-btn load" title="Load into form" onclick="loadReceipt(${realIdx})">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+        <div class="rcm-ac">
+          <button class="rb-btn load" title="Load" onclick="loadReceipt(${ri})">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
           </button>
-          ${canEdit ? `
-          <button class="rcm-btn edit" title="Edit" onclick="openModal(${realIdx})">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          ${canEdit?`<button class="rb-btn edit" title="Edit" onclick="openEditModal(${ri})">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </button>`:`<span class="lock-ic"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></span>`}
+          ${isAdmin?`
+          <button class="rb-btn perm ${r.editPermission?'on':''}" title="${r.editPermission?'Revoke edit':'Grant edit'}" onclick="togglePerm(${ri})">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
           </button>
-          ` : '<span class="locked-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></span>'}
-          ${isAdmin ? `
-          <button class="rcm-btn" title="${r.editPermission?'Revoke edit':'Grant edit'}" style="color:${r.editPermission?'#f0c040':'#555'}" onclick="toggleEditPerm(${realIdx})">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
-          </button>
-          <button class="rcm-btn del" title="Delete" onclick="deleteReceipt(${realIdx})">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-          </button>
-          ` : ''}
+          <button class="rb-btn del" title="Delete" onclick="deleteReceipt(${ri})">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+          </button>`:''}
         </div>
       </div>
     </div>`;
   }).join('');
 }
 
-async function loadReceipt(i) {
+async function loadReceipt(i){
   const arr = await getReceipts();
   const r = arr[i]; if(!r) return;
-  document.getElementById('inp-serial').value    = r.serial   || '';
-  document.getElementById('inp-name').value      = r.name     || '';
-  document.getElementById('inp-cid').value       = r.cid      || '';
-  document.getElementById('inp-mobile').value    = r.mobile   || '';
-  document.getElementById('inp-pppoe').value     = r.pppoe    || '';
-  document.getElementById('inp-plan').value      = r.planVal  || '';
-  document.getElementById('inp-onu-model').value = r.onuModel || '';
-  document.getElementById('inp-onu-serial').value= r.onuSer   || '';
-  document.getElementById('inp-onu-mac').value   = r.onuMac   || '';
-  document.getElementById('inp-address').value   = r.address  || '';
-  // Only admin can load a different agent name; staff always keeps their own name
-  if (currentUser && currentUser.role === 'admin') {
-    document.getElementById('inp-agent').value = r.agent || '';
-  }
+  document.getElementById('inp-serial').value     = r.serial   ||'';
+  document.getElementById('inp-name').value       = r.name     ||'';
+  document.getElementById('inp-cid').value        = r.cid      ||'';
+  document.getElementById('inp-mobile').value     = r.mobile   ||'';
+  document.getElementById('inp-pppoe').value      = r.pppoe    ||'';
+  document.getElementById('inp-plan').value       = r.planVal  ||'';
+  document.getElementById('inp-onu-model').value  = r.onuModel ||'';
+  document.getElementById('inp-onu-serial').value = r.onuSer   ||'';
+  document.getElementById('inp-onu-mac').value    = r.onuMac   ||'';
+  document.getElementById('inp-address').value    = r.address  ||'';
+  // agent stays as current user name for staff; admin can see original
+  if(CU.role==='admin') document.getElementById('inp-agent').value = r.agent||CU.name;
   onPlanChange();
-  generateReceipt();
-  switchTab('generator', document.getElementById('tab-btn-generator'));
-  showToast('✓ Receipt loaded!');
+  switchTab('generator', document.getElementById('tbb-gen'));
+  showToast('✓ Receipt loaded into form');
 }
 
-async function deleteReceipt(i) {
-  if (!confirm('Delete this receipt?')) return;
+async function deleteReceipt(i){
+  if(!confirm('Delete this receipt?')) return;
   const arr = await getReceipts();
   arr.splice(i,1);
   await putReceipts(arr);
-  renderReceiptsTab();
+  renderReceipts();
   showToast('Receipt deleted');
 }
 
-async function toggleEditPerm(i) {
+async function togglePerm(i){
   const arr = await getReceipts();
   arr[i].editPermission = !arr[i].editPermission;
   await putReceipts(arr);
-  renderReceiptsTab();
-  showToast(arr[i].editPermission ? '✓ Edit permission granted' : 'Edit permission revoked');
+  renderReceipts();
+  showToast(arr[i].editPermission?'✓ Edit granted':'Edit permission revoked');
 }
 
-/* ════════════════════════════════════════
-   EDIT MODAL
-════════════════════════════════════════ */
-let _modalIdx = -1;
+/* ════════ MODAL ════════ */
+let _mi=-1, _mtype='';
 
-async function openModal(i) {
+async function openEditModal(i){
   const arr = await getReceipts();
   const r = arr[i]; if(!r) return;
-  _modalIdx = i;
-  document.getElementById('modal-serial').value  = r.serial  || '';
-  document.getElementById('modal-name').value    = r.name    || '';
-  document.getElementById('modal-cid').value     = r.cid     || '';
-  document.getElementById('modal-mobile').value  = r.mobile  || '';
-  document.getElementById('modal-pppoe').value   = r.pppoe   || '';
-  document.getElementById('modal-address').value = r.address || '';
-  document.getElementById('modal-agent').value   = r.agent   || '';
+  _mi=i; _mtype='receipt';
+  document.getElementById('modal-title').textContent='Edit Receipt';
+  document.getElementById('modal-ok-btn').textContent='Save Changes';
+  document.getElementById('modal-body').innerHTML=`
+    <div class="mf"><label>Customer Name</label><input id="m-name" value="${r.name||''}"/></div>
+    <div class="mf"><label>CID</label><input id="m-cid" value="${r.cid||''}"/></div>
+    <div class="mf"><label>Mobile</label><input id="m-mobile" value="${r.mobile||''}"/></div>
+    <div class="mf"><label>PPPoE Password</label><input id="m-pppoe" value="${r.pppoe||''}"/></div>
+    <div class="mf"><label>Address</label><input id="m-address" value="${r.address||''}"/></div>
+    <div class="mf"><label>Served By</label><input id="m-agent" value="${r.agent||''}"/></div>
+  `;
   document.getElementById('modal-overlay').classList.add('show');
 }
 
-function closeModal() { document.getElementById('modal-overlay').classList.remove('show'); _modalIdx = -1; }
+// Edit user modal
+function openUserModal(i){
+  const users = getUsers();
+  const u = users[i]; if(!u) return;
+  _mi=i; _mtype='user';
+  document.getElementById('modal-title').textContent='Edit Staff Account';
+  document.getElementById('modal-ok-btn').textContent='Save';
+  document.getElementById('modal-body').innerHTML=`
+    <div class="mf"><label>Full Name</label><input id="m-u-name" value="${u.name||''}"/></div>
+    <div class="mf"><label>Email</label><input id="m-u-email" value="${u.email||''}"/></div>
+    <div class="mf"><label>New Password (leave blank to keep)</label><input type="password" id="m-u-pass" placeholder="••••••••"/></div>
+  `;
+  document.getElementById('modal-overlay').classList.add('show');
+}
 
-async function saveModal() {
-  if (_modalIdx < 0) return;
+function closeModal(){ document.getElementById('modal-overlay').classList.remove('show'); _mi=-1; _mtype=''; }
+document.getElementById('modal-overlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
+
+async function modalOk(){
+  if(_mtype==='receipt') await saveReceiptEdit();
+  else if(_mtype==='user') saveUserEdit();
+}
+
+async function saveReceiptEdit(){
+  if(_mi<0) return;
   const arr = await getReceipts();
-  const r = arr[_modalIdx];
-  r.name    = document.getElementById('modal-name').value.trim();
-  r.cid     = document.getElementById('modal-cid').value.trim();
-  r.mobile  = document.getElementById('modal-mobile').value.trim();
-  r.pppoe   = document.getElementById('modal-pppoe').value.trim();
-  r.address = document.getElementById('modal-address').value.trim();
-  r.agent   = document.getElementById('modal-agent').value.trim();
-  r.editedBy  = currentUser.name;
-  r.editedAt  = new Date().toISOString();
+  const r = arr[_mi];
+  r.name    = document.getElementById('m-name').value.trim();
+  r.cid     = document.getElementById('m-cid').value.trim();
+  r.mobile  = document.getElementById('m-mobile').value.trim();
+  r.pppoe   = document.getElementById('m-pppoe').value.trim();
+  r.address = document.getElementById('m-address').value.trim();
+  r.agent   = document.getElementById('m-agent').value.trim();
+  r.editedBy= CU.name;
+  r.editedAt= new Date().toISOString();
   await putReceipts(arr);
   closeModal();
-  renderReceiptsTab();
+  renderReceipts();
   showToast('✓ Receipt updated!');
 }
 
-document.getElementById('modal-overlay').addEventListener('click', function(e){ if(e.target===this) closeModal(); });
-
-/* ════════════════════════════════════════
-   DOWNLOAD
-════════════════════════════════════════ */
-function downloadImage() {
-  if (!document.getElementById('receipt').classList.contains('visible')) { alert('Generate a receipt first.'); return; }
-  const name = document.getElementById('r-name').textContent.replace(/\s+/g,'_') || 'receipt';
-  const cid  = document.getElementById('r-cid').textContent || '';
-  html2canvas(document.getElementById('receipt-card'), { scale:2, useCORS:true, backgroundColor:'#f0f4ff', logging:false })
-    .then(canvas => {
-      const link = document.createElement('a');
-      link.download = 'AmberIT_Receipt_' + name + '_CID' + cid + '.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-      showToast('✓ Image downloaded!');
-    }).catch(() => alert('Download failed. Try Print/PDF instead.'));
+function saveUserEdit(){
+  if(_mi<0) return;
+  const users = getUsers();
+  const u = users[_mi];
+  const nm = document.getElementById('m-u-name').value.trim();
+  const em = document.getElementById('m-u-email').value.trim().toLowerCase();
+  const pw = document.getElementById('m-u-pass').value;
+  if(!nm||!em){alert('Name and email are required.');return;}
+  if(em===ADMIN.email){alert('That email is reserved for admin.');return;}
+  const dup = users.find((x,xi)=>x.email===em&&xi!==_mi);
+  if(dup){alert('Email already used by another account.');return;}
+  u.name  = nm;
+  u.email = em;
+  if(pw) u.password=pw;
+  putUsers(users);
+  closeModal();
+  renderUsers();
+  showToast('✓ Staff account updated!');
 }
 
-/* Toast */
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
+/* ════════ ADMIN: USERS ════════ */
+function renderUsers(){
+  const users = getUsers();
+  const tbody = document.getElementById('users-tbody');
+  const all   = [{...ADMIN,_isAdmin:true}, ...users.map((u,i)=>({...u,_idx:i}))];
+  tbody.innerHTML = all.map(u=>`
+    <tr>
+      <td><strong>${u.name}</strong></td>
+      <td style="font-family:'IBM Plex Mono',monospace;font-size:11px">${u.email}</td>
+      <td><span class="rb-badge ${u.role}">${u.role}</span></td>
+      <td><span class="sd ${u.active!==false?'on':'off'}"></span>${u.active!==false?'Active':'Inactive'}</td>
+      <td>${u._isAdmin?'<span style="color:#555;font-size:11px">—</span>':`
+        <button class="btn-edit-user" onclick="openUserModal(${u._idx})">Edit</button>
+        <button class="btn-rm" onclick="toggleUser(${u._idx})">${u.active!==false?'Deactivate':'Activate'}</button>
+      `}</td>
+    </tr>
+  `).join('');
+}
+
+function addUser(){
+  const name  = document.getElementById('nu-name').value.trim();
+  const email = document.getElementById('nu-email').value.trim().toLowerCase();
+  const pass  = document.getElementById('nu-pass').value;
+  if(!name||!email||!pass){alert('Please fill all fields.');return;}
+  if(email===ADMIN.email){alert('That email is reserved.');return;}
+  const users = getUsers();
+  if(users.find(u=>u.email===email)){alert('A user with that email already exists.');return;}
+  users.push({id:'u-'+Date.now(), name, email, password:pass, role:'staff', active:true});
+  putUsers(users);
+  renderUsers();
+  document.getElementById('nu-name').value='';
+  document.getElementById('nu-email').value='';
+  document.getElementById('nu-pass').value='';
+  showToast('✓ Staff account created!');
+}
+
+function toggleUser(i){
+  const users=getUsers();
+  users[i].active=!users[i].active;
+  putUsers(users);
+  renderUsers();
+  showToast('Account '+(users[i].active?'activated':'deactivated'));
+}
+
+/* ════════ DOWNLOAD ════════ */
+function downloadImage(){
+  if(!document.getElementById('receipt').classList.contains('visible')){alert('Generate a receipt first.');return;}
+  const name=document.getElementById('r-name').textContent.replace(/\s+/g,'_')||'receipt';
+  const cid=document.getElementById('r-cid').textContent||'';
+  html2canvas(document.getElementById('receipt-card'),{scale:2,useCORS:true,backgroundColor:'#f0f4ff',logging:false})
+    .then(canvas=>{
+      const a=document.createElement('a');
+      a.download='AmberIT_'+name+'_CID'+cid+'.png';
+      a.href=canvas.toDataURL('image/png');
+      a.click();
+      showToast('✓ Image downloaded!');
+    }).catch(()=>alert('Download failed. Try Print/PDF.'));
+}
+
+/* ════════ TOAST ════════ */
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
+  setTimeout(()=>t.classList.remove('show'),2800);
 }
 </script>
 </body>
