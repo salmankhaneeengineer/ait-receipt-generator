@@ -10,84 +10,56 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-      font-family: 'Nunito', sans-serif;
-      background: #0f1117;
-      min-height: 100vh;
-      padding: 1.5rem 1rem 3rem;
-      color: #1a1a1a;
+    :root {
+      --amber: #c0703a;
+      --amber-dark: #a85a28;
+      --dark: #161616;
+      --panel: #1e1e1e;
+      --border: #2a2a2a;
+      --text: #e0e0e0;
+      --muted: #777;
     }
 
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--dark);
+      min-height: 100vh;
+      padding: 1.5rem 1rem 4rem;
+      color: var(--text);
+    }
+
+    /* ── PAGE HEADER ── */
     .page-header {
       text-align: center;
       margin-bottom: 1.5rem;
     }
     .page-header h1 {
       font-family: 'Rajdhani', sans-serif;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 600;
       color: #555;
       letter-spacing: 4px;
       text-transform: uppercase;
     }
 
-    /* ── TABS ── */
-    .tabs {
-      display: flex;
-      gap: 4px;
-      max-width: 1060px;
-      margin: 0 auto 16px;
-    }
-
-    .tab-btn {
-      padding: 8px 20px;
-      border: 1px solid #2a2a2a;
-      border-radius: 8px;
-      background: #1a1a1a;
-      color: #666;
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      cursor: pointer;
-      transition: all 0.15s;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .tab-btn.active {
-      background: #1a6b4a;
-      border-color: #1a6b4a;
-      color: #fff;
-    }
-
-    .tab-btn:not(.active):hover {
-      background: #222;
-      color: #aaa;
-    }
-
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
-
     /* ── LAYOUT ── */
     .app-wrap {
       display: grid;
       grid-template-columns: 340px 1fr;
       gap: 24px;
-      max-width: 1060px;
+      max-width: 1040px;
       margin: 0 auto;
       align-items: start;
     }
 
-    @media (max-width: 780px) {
+    @media (max-width: 800px) {
       .app-wrap { grid-template-columns: 1fr; }
     }
 
     /* ── FORM PANEL ── */
     .form-panel {
-      background: #1a1a1a;
-      border: 1px solid #252525;
+      background: var(--panel);
+      border: 1px solid var(--border);
       border-radius: 16px;
       padding: 1.4rem;
     }
@@ -98,42 +70,42 @@
       justify-content: space-between;
       margin-bottom: 1.2rem;
       padding-bottom: 12px;
-      border-bottom: 1px solid #252525;
+      border-bottom: 1px solid var(--border);
     }
 
     .form-panel-header h2 {
       font-family: 'Rajdhani', sans-serif;
       font-size: 16px;
       font-weight: 700;
-      color: #e0e0e0;
+      color: var(--text);
       letter-spacing: 1px;
       text-transform: uppercase;
     }
 
     .btn-clear {
+      display: flex;
+      align-items: center;
+      gap: 5px;
       padding: 5px 12px;
       background: transparent;
-      border: 1px solid #3a1a1a;
+      color: #e05555;
+      border: 1px solid #5a2020;
       border-radius: 6px;
-      color: #c04a4a;
       font-family: 'Nunito', sans-serif;
       font-size: 11px;
       font-weight: 700;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 4px;
+      letter-spacing: 0.5px;
       transition: background 0.15s;
     }
-
-    .btn-clear:hover { background: #2a1010; }
+    .btn-clear:hover { background: rgba(224,85,85,0.1); }
 
     .section-group { margin-bottom: 1.1rem; }
 
     .section-group-title {
       font-size: 10px;
       font-weight: 700;
-      color: #1a6b4a;
+      color: var(--amber);
       letter-spacing: 2px;
       text-transform: uppercase;
       margin-bottom: 9px;
@@ -146,7 +118,7 @@
       content: '';
       flex: 1;
       height: 1px;
-      background: #252525;
+      background: var(--border);
     }
 
     .field { margin-bottom: 10px; }
@@ -155,7 +127,7 @@
       display: block;
       font-size: 10px;
       font-weight: 700;
-      color: #666;
+      color: var(--muted);
       text-transform: uppercase;
       letter-spacing: 0.8px;
       margin-bottom: 4px;
@@ -165,30 +137,31 @@
     .field select {
       width: 100%;
       padding: 8px 12px;
-      border: 1px solid #2e2e2e;
+      border: 1px solid #333;
       border-radius: 7px;
       font-size: 13px;
       font-family: 'Nunito', sans-serif;
-      background: #111;
-      color: #e0e0e0;
+      background: var(--dark);
+      color: var(--text);
       transition: border-color 0.15s, box-shadow 0.15s;
       appearance: none;
     }
 
     .field select {
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: right 11px center;
-      padding-right: 32px;
+      padding-right: 34px;
       cursor: pointer;
     }
 
-    .field select option { background: #1a1a1a; color: #e0e0e0; }
+    .field select option { background: #222; color: var(--text); }
 
-    .field input:focus, .field select:focus {
+    .field input:focus,
+    .field select:focus {
       outline: none;
-      border-color: #1a6b4a;
-      box-shadow: 0 0 0 3px rgba(26,107,74,0.15);
+      border-color: var(--amber);
+      box-shadow: 0 0 0 3px rgba(192,112,58,0.15);
     }
 
     .field input::placeholder { color: #3a3a3a; }
@@ -200,77 +173,77 @@
       font-family: 'IBM Plex Mono', monospace;
     }
 
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
     .serial-row {
       display: flex;
       gap: 6px;
+      align-items: flex-end;
     }
 
-    .serial-row input { flex: 1; }
+    .serial-row .field { flex: 1; margin-bottom: 0; }
 
-    .btn-gen-serial {
+    .btn-regen {
       padding: 8px 10px;
-      background: #1a2e24;
-      border: 1px solid #1a6b4a;
+      background: #1a1a1a;
+      border: 1px solid #333;
       border-radius: 7px;
-      color: #4ecb8a;
-      font-size: 11px;
-      font-weight: 700;
+      color: var(--muted);
       cursor: pointer;
-      white-space: nowrap;
-      transition: background 0.15s;
-      font-family: 'Nunito', sans-serif;
+      flex-shrink: 0;
+      transition: color 0.15s, border-color 0.15s;
+      display: flex;
+      align-items: center;
     }
-
-    .btn-gen-serial:hover { background: #1f3d2d; }
+    .btn-regen:hover { color: var(--amber); border-color: var(--amber); }
 
     .plan-preview {
       margin-top: 7px;
       padding: 7px 11px;
-      background: #111;
-      border: 1px solid #252525;
+      background: var(--dark);
+      border: 1px solid var(--border);
       border-radius: 7px;
       display: none;
     }
-
     .plan-preview.show { display: flex; align-items: center; justify-content: space-between; }
-
-    .plan-preview-name { font-family: 'Rajdhani', sans-serif; font-size: 13px; font-weight: 700; color: #1a6b4a; letter-spacing: 1px; }
+    .plan-preview-name { font-family: 'Rajdhani', sans-serif; font-size: 13px; font-weight: 700; color: var(--amber); letter-spacing: 1px; }
     .plan-preview-speed { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #888; }
-    .plan-preview-price { font-family: 'Rajdhani', sans-serif; font-size: 14px; font-weight: 700; color: #e0e0e0; }
-
-    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .plan-preview-price { font-family: 'Rajdhani', sans-serif; font-size: 14px; font-weight: 700; color: var(--text); }
 
     .btn-generate {
       width: 100%;
       padding: 11px;
-      background: #1a6b4a;
+      background: var(--amber);
       color: #fff;
       border: none;
       border-radius: 8px;
       font-family: 'Rajdhani', sans-serif;
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 700;
       letter-spacing: 2px;
       cursor: pointer;
       transition: opacity 0.15s, transform 0.1s;
       margin-top: 4px;
     }
-
     .btn-generate:hover { opacity: 0.88; }
     .btn-generate:active { transform: scale(0.98); }
 
     .btn-row {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 7px;
-      margin-top: 9px;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 8px;
     }
 
     .btn-secondary {
-      padding: 8px 6px;
+      padding: 8px;
       background: transparent;
-      color: #666;
-      border: 1px solid #252525;
+      color: var(--muted);
+      border: 1px solid var(--border);
       border-radius: 7px;
       font-family: 'Nunito', sans-serif;
       font-size: 11px;
@@ -280,23 +253,21 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 4px;
+      gap: 5px;
     }
+    .btn-secondary:hover { background: #2a2a2a; color: #ccc; }
 
-    .btn-secondary:hover { background: #222; color: #ccc; }
-
-    .btn-save-receipt {
-      background: #1a2e24;
-      border-color: #1a6b4a;
-      color: #4ecb8a;
+    /* ── RIGHT COLUMN ── */
+    .right-col {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
     }
-
-    .btn-save-receipt:hover { background: #1f3d2d; color: #6eebb0; }
 
     /* ── RECEIPT PANEL ── */
     .receipt-panel {
-      background: #1a1a1a;
-      border: 1px solid #252525;
+      background: var(--panel);
+      border: 1px solid var(--border);
       border-radius: 16px;
       overflow: hidden;
     }
@@ -306,9 +277,9 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 4rem 1rem;
-      color: #2e2e2e;
-      gap: 12px;
+      padding: 3.5rem 1rem;
+      color: #333;
+      gap: 10px;
       font-size: 13px;
       text-align: center;
     }
@@ -316,554 +287,297 @@
     #receipt { display: none; }
     #receipt.visible { display: block; }
 
-    /* ═══════════════════════
-       WHITE RECEIPT CARD
-    ═══════════════════════ */
+    /* ══════════════════════════
+       RECEIPT CARD  — new colors
+    ══════════════════════════ */
     #receipt-card {
-      background: #fff;
+      background: #f0f4ff;
       font-family: 'Nunito', sans-serif;
     }
 
     /* Header */
     .rh-top {
-      background: #0a2a1c;
-      padding: 1.2rem 1.8rem 1rem;
+      background: #0d1b4b;
+      padding: 1.2rem 1.6rem 0.9rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 10px;
     }
 
-    .rh-logo { display: flex; align-items: center; gap: 14px; }
+    .rh-logo { display: flex; align-items: center; gap: 12px; }
     .rh-logo img { height: 42px; width: auto; display: block; }
-    .rh-logo-divider { width: 1px; height: 32px; background: #1a4a30; }
-
-    .rh-company-name {
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 20px;
-      font-weight: 700;
-      color: #f0f0f0;
-      letter-spacing: 2px;
-    }
-
-    .rh-company-tagline {
-      font-size: 10px;
-      color: #4ecb8a;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-top: 2px;
-    }
+    .rh-logo-divider { width: 1px; height: 32px; background: #1e3070; }
+    .rh-company-name { font-family: 'Rajdhani', sans-serif; font-size: 19px; font-weight: 700; color: #e8eeff; letter-spacing: 2px; }
+    .rh-company-tagline { font-size: 9px; color: #6a8fd8; letter-spacing: 2px; text-transform: uppercase; margin-top: 2px; }
 
     .rh-badge-col { text-align: right; }
+    .rh-badge { display: inline-block; background: var(--amber); color: #fff; font-size: 9px; font-weight: 800; letter-spacing: 2px; padding: 3px 12px; border-radius: 20px; text-transform: uppercase; }
+    .rh-serial { font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: #3a5090; margin-top: 4px; }
+    .rh-date { font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: #3a5090; margin-top: 2px; }
 
-    .rh-badge {
-      display: inline-block;
-      background: #1a6b4a;
-      color: #fff;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 2px;
-      padding: 4px 14px;
-      border-radius: 20px;
-      text-transform: uppercase;
-    }
-
-    .rh-meta {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 9px;
-      color: #3a6a50;
-      margin-top: 5px;
-      text-align: right;
-      line-height: 1.6;
-    }
-
-    .rh-stripe { height: 3px; background: linear-gradient(90deg, #1a6b4a, #4ecb8a, #1a6b4a); }
+    /* Blue stripe */
+    .rh-stripe { height: 3px; background: linear-gradient(90deg, #1a3a9a 0%, var(--amber) 50%, #1a3a9a 100%); }
 
     /* Contact bar */
     .rh-contact-bar {
-      background: #f4faf7;
-      border-bottom: 1px solid #e0ede8;
-      padding: 7px 1.8rem;
+      background: #e4eaff;
+      border-bottom: 1px solid #c8d4f4;
+      padding: 6px 1.6rem;
       display: flex;
-      gap: 1.8rem;
+      gap: 1.5rem;
       flex-wrap: wrap;
       align-items: center;
     }
 
-    .rh-contact-item {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-      color: #555;
-    }
-
-    .rh-contact-link { color: #1a6b4a; text-decoration: none; }
+    .rh-contact-item { display: flex; align-items: center; gap: 5px; font-size: 10px; color: #3a5090; }
+    .rh-contact-link { color: var(--amber); text-decoration: none; }
     .rh-contact-link:hover { text-decoration: underline; }
 
     /* Body */
-    .rb { padding: 1.1rem 1.8rem; }
+    .rb { padding: 1.1rem 1.6rem; }
 
     /* Customer strip */
     .rb-customer {
       display: flex;
       align-items: center;
-      gap: 14px;
-      background: #f4faf7;
-      border: 1px solid #d0e8da;
+      gap: 12px;
+      background: #fff;
+      border: 1px solid #c8d4f4;
+      border-left: 4px solid #1a3a9a;
       border-radius: 10px;
-      padding: 10px 15px;
+      padding: 10px 14px;
       margin-bottom: 1rem;
     }
 
     .rb-avatar {
-      width: 44px;
-      height: 44px;
+      width: 44px; height: 44px;
       border-radius: 50%;
-      background: #1a6b4a;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 16px;
-      font-weight: 700;
-      color: #fff;
+      background: #1a3a9a;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Rajdhani', sans-serif; font-size: 16px; font-weight: 700; color: #fff;
       flex-shrink: 0;
     }
 
-    .rb-cust-name { font-weight: 800; font-size: 15px; color: #0a2a1c; }
-    .rb-cust-sub { font-size: 11px; color: #6a9a80; font-family: 'IBM Plex Mono', monospace; margin-top: 2px; }
-    .rb-cust-addr { font-size: 10px; color: #8ab0a0; margin-top: 2px; }
-
-    /* Mobile chip */
-    .rb-mobile-chip {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: #e8f5ee;
-      border: 1px solid #b0d8c0;
-      border-radius: 8px;
-      padding: 7px 13px;
-      margin-bottom: 1rem;
-    }
-
-    .rb-mobile-chip svg { flex-shrink: 0; }
-    .rb-mobile-label { font-size: 9px; color: #6a9a80; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
-    .rb-mobile-num { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #0a4a2a; }
-
-    .rb-grid-3 {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 1rem;
-    }
-
-    .rb-grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 1rem;
-    }
-
-    .info-card {
-      background: #f9fdfb;
-      border: 1px solid #e0ede8;
-      border-radius: 10px;
-      overflow: hidden;
-    }
-
-    .info-card-header {
-      background: #0a2a1c;
-      padding: 5px 13px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .info-card-title {
-      font-size: 9px;
-      font-weight: 700;
-      color: #4ecb8a;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-    }
-
-    .info-card-body { padding: 8px 13px; }
-
-    .info-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 3px 0;
-    }
-
-    .info-row:not(:last-child) { border-bottom: 1px dashed #daeae0; }
-
-    .info-key { font-size: 10px; color: #8ab0a0; }
-
-    .info-val {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 11px;
-      font-weight: 600;
-      color: #0a2a1c;
-      text-align: right;
-    }
-
-    .info-val.accent { color: #1a6b4a; font-size: 12px; }
+    .rb-cust-name { font-weight: 800; font-size: 14px; color: #0d1b4b; }
+    .rb-cust-meta { font-size: 10px; color: #6a7090; font-family: 'IBM Plex Mono', monospace; margin-top: 2px; }
+    .rb-cust-addr { font-size: 10px; color: #8090b0; margin-top: 2px; }
 
     /* Plan card */
-    .plan-card {
-      background: #0a2a1c;
-      border-radius: 10px;
-      overflow: hidden;
-      margin-bottom: 1rem;
-    }
+    .plan-card { background: #0d1b4b; border-radius: 10px; overflow: hidden; margin-bottom: 1rem; }
 
     .plan-card-header {
-      background: #1a6b4a;
-      padding: 7px 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      background: var(--amber);
+      padding: 6px 14px;
+      display: flex; align-items: center; gap: 7px;
     }
 
-    .plan-card-header-title {
-      font-size: 9px;
-      font-weight: 700;
-      color: rgba(255,255,255,0.8);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
+    .plan-card-header-title { font-size: 9px; font-weight: 700; color: rgba(255,255,255,0.85); letter-spacing: 2px; text-transform: uppercase; }
 
     .plan-card-body {
-      padding: 11px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 10px;
+      padding: 11px 14px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 8px;
     }
 
-    .plan-card-name {
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 20px;
-      font-weight: 700;
-      color: #f0f0f0;
-      letter-spacing: 2px;
-    }
-
-    .plan-card-speed { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #4ecb8a; }
-
+    .plan-card-name { font-family: 'Rajdhani', sans-serif; font-size: 19px; font-weight: 700; color: #e8eeff; letter-spacing: 2px; }
+    .plan-card-speed { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--amber); }
     .plan-card-features { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px; }
-
-    .plan-feat-tag {
-      font-size: 9px;
-      color: #6a9a80;
-      background: #0f3322;
-      border: 1px solid #1a4a30;
-      border-radius: 4px;
-      padding: 2px 6px;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-    }
-
+    .plan-feat-tag { font-size: 9px; color: #8090c0; background: #162050; border: 1px solid #1e3070; border-radius: 4px; padding: 2px 7px; font-weight: 600; letter-spacing: 0.5px; }
     .plan-card-price-col { text-align: right; }
+    .plan-card-price { font-family: 'Rajdhani', sans-serif; font-size: 24px; font-weight: 700; color: #e8eeff; }
+    .plan-card-price-label { font-size: 9px; color: #4a6090; letter-spacing: 1px; text-transform: uppercase; margin-top: 1px; }
 
-    .plan-card-price {
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 26px;
-      font-weight: 700;
-      color: #f0f0f0;
-    }
+    /* Grid */
+    .rb-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 9px; margin-bottom: 1rem; }
+    .rb-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-bottom: 1rem; }
 
-    .plan-card-price-label {
-      font-size: 9px;
-      color: #4a7a5a;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      margin-top: 1px;
-    }
+    .info-card { background: #fff; border: 1px solid #c8d4f4; border-radius: 9px; overflow: hidden; }
+
+    .info-card-header { background: #0d1b4b; padding: 5px 12px; display: flex; align-items: center; gap: 6px; }
+    .info-card-title { font-size: 9px; font-weight: 700; color: #6a8fd8; letter-spacing: 1.5px; text-transform: uppercase; }
+
+    .info-card-body { padding: 8px 12px; }
+
+    .info-row { display: flex; justify-content: space-between; align-items: center; padding: 3px 0; }
+    .info-row:not(:last-child) { border-bottom: 1px dashed #dde4f8; }
+
+    .info-key { font-size: 10px; color: #8090b0; }
+    .info-val { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: #0d1b4b; text-align: right; }
+    .info-val.accent { color: #1a3a9a; font-size: 12px; }
 
     /* Section title */
     .rb-section-title {
-      font-size: 10px;
-      font-weight: 700;
-      color: #1a6b4a;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-bottom: 8px;
+      font-size: 9px; font-weight: 700; color: #1a3a9a; letter-spacing: 2px; text-transform: uppercase;
+      margin-bottom: 7px; display: flex; align-items: center; gap: 7px;
+    }
+    .rb-section-title::after { content: ''; flex: 1; height: 1px; background: #c8d4f4; }
+
+    /* Contacts */
+    .rb-contacts-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 7px; margin-bottom: 1rem; }
+
+    .contact-chip { background: #fff; border: 1px solid #c8d4f4; border-radius: 8px; padding: 7px 9px; display: flex; align-items: center; gap: 6px; }
+    .contact-chip-label { font-size: 8px; color: #8090b0; text-transform: uppercase; letter-spacing: 0.8px; }
+    .contact-chip-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; color: #0d1b4b; }
+
+    /* WhatsApp */
+    .wa-chip { background: #f0faf0; border: 1px solid #b8e4b8; border-radius: 8px; padding: 8px 12px; display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; }
+    .wa-dot { width: 28px; height: 28px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .wa-chip-label { font-size: 8px; color: #388E3C; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+    .wa-chip-num { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; color: #1B5E20; }
+    .wa-chip-note { font-size: 8px; color: #66BB6A; margin-top: 1px; }
+
+    /* Footer */
+    .rf { background: #0d1b4b; padding: 8px 1.6rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
+    .rf-served { font-size: 10px; color: #3a5090; }
+    .rf-served strong { color: var(--amber); font-weight: 700; }
+    .rf-tagline { font-size: 9px; color: #1e3070; letter-spacing: 1px; font-style: italic; }
+
+    /* ── SAVED RECEIPTS PANEL ── */
+    .saved-panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.2rem 1.4rem;
+    }
+
+    .saved-panel-header {
       display: flex;
       align-items: center;
-      gap: 8px;
-    }
-
-    .rb-section-title::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: #daeae0;
-    }
-
-    /* Call centre */
-    .rb-contacts-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
+      justify-content: space-between;
       margin-bottom: 1rem;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
     }
 
-    .contact-chip {
-      background: #f4faf7;
-      border: 1px solid #d0e8da;
-      border-radius: 8px;
-      padding: 8px 10px;
+    .saved-panel-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: 1px;
+      text-transform: uppercase;
       display: flex;
       align-items: center;
       gap: 7px;
     }
 
-    .contact-chip-label { font-size: 9px; color: #8ab0a0; text-transform: uppercase; letter-spacing: 0.8px; }
-    .contact-chip-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: #0a2a1c; }
-
-    /* WhatsApp */
-    .wa-chip {
-      background: #f0faf4;
-      border: 1px solid #b0d8c0;
-      border-radius: 8px;
-      padding: 9px 13px;
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      margin-bottom: 1rem;
-    }
-
-    .wa-dot {
-      width: 30px;
-      height: 30px;
-      background: #25D366;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .wa-chip-label { font-size: 9px; color: #388E3C; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
-    .wa-chip-num { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #1B5E20; }
-    .wa-chip-note { font-size: 9px; color: #66BB6A; margin-top: 1px; }
-
-    /* Receipt footer */
-    .rf {
-      background: #0a2a1c;
-      padding: 9px 1.8rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .rf-served { font-size: 11px; color: #3a6a50; }
-    .rf-served strong { color: #4ecb8a; font-weight: 700; }
-    .rf-tagline { font-size: 10px; color: #2a5a3a; letter-spacing: 1px; font-style: italic; }
-
-    /* ── SAVED RECEIPTS TAB ── */
-    .saved-wrap {
-      max-width: 1060px;
-      margin: 0 auto;
-    }
-
-    .saved-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
-    }
-
-    .saved-header h2 {
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 16px;
-      font-weight: 700;
-      color: #e0e0e0;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-
     .saved-count {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 11px;
-      color: #555;
+      background: var(--amber);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 10px;
+      font-family: 'Nunito', sans-serif;
     }
 
     .btn-clear-all {
-      padding: 6px 14px;
+      font-size: 10px;
+      color: #e05555;
       background: transparent;
-      border: 1px solid #3a1a1a;
-      border-radius: 6px;
-      color: #c04a4a;
-      font-family: 'Nunito', sans-serif;
-      font-size: 11px;
-      font-weight: 700;
+      border: 1px solid #5a2020;
+      border-radius: 5px;
+      padding: 3px 9px;
       cursor: pointer;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
       transition: background 0.15s;
     }
-
-    .btn-clear-all:hover { background: #2a1010; }
-
-    .saved-search {
-      width: 100%;
-      padding: 9px 14px;
-      border: 1px solid #252525;
-      border-radius: 8px;
-      background: #1a1a1a;
-      color: #e0e0e0;
-      font-family: 'Nunito', sans-serif;
-      font-size: 13px;
-      margin-bottom: 14px;
-    }
-
-    .saved-search:focus { outline: none; border-color: #1a6b4a; }
-    .saved-search::placeholder { color: #3a3a3a; }
-
-    .saved-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 12px;
-    }
-
-    .saved-card {
-      background: #1a1a1a;
-      border: 1px solid #252525;
-      border-radius: 12px;
-      overflow: hidden;
-      transition: border-color 0.15s;
-    }
-
-    .saved-card:hover { border-color: #1a6b4a; }
-
-    .saved-card-header {
-      background: #0a2a1c;
-      padding: 8px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .saved-card-serial {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 10px;
-      font-weight: 600;
-      color: #4ecb8a;
-    }
-
-    .saved-card-date {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 9px;
-      color: #3a6a50;
-    }
-
-    .saved-card-body { padding: 10px 14px; }
-
-    .saved-card-name {
-      font-weight: 800;
-      font-size: 14px;
-      color: #e0e0e0;
-      margin-bottom: 3px;
-    }
-
-    .saved-card-info {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 10px;
-      color: #555;
-      line-height: 1.7;
-    }
-
-    .saved-card-plan {
-      display: inline-block;
-      background: #1a2e24;
-      border: 1px solid #1a6b4a;
-      border-radius: 4px;
-      color: #4ecb8a;
-      font-size: 10px;
-      font-weight: 700;
-      padding: 2px 8px;
-      margin-top: 6px;
-      font-family: 'Rajdhani', sans-serif;
-      letter-spacing: 1px;
-    }
-
-    .saved-card-footer {
-      padding: 8px 14px;
-      border-top: 1px solid #222;
-      display: flex;
-      gap: 6px;
-    }
-
-    .btn-load {
-      flex: 1;
-      padding: 6px;
-      background: #1a2e24;
-      border: 1px solid #1a6b4a;
-      border-radius: 6px;
-      color: #4ecb8a;
-      font-family: 'Nunito', sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background 0.15s;
-    }
-
-    .btn-load:hover { background: #1f3d2d; }
-
-    .btn-delete {
-      padding: 6px 10px;
-      background: transparent;
-      border: 1px solid #2a1a1a;
-      border-radius: 6px;
-      color: #7a3a3a;
-      font-family: 'Nunito', sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background 0.15s;
-    }
-
-    .btn-delete:hover { background: #2a1010; color: #c04a4a; }
+    .btn-clear-all:hover { background: rgba(224,85,85,0.1); }
 
     .saved-empty {
       text-align: center;
-      padding: 3rem 1rem;
-      color: #333;
-      font-size: 13px;
+      color: #444;
+      font-size: 12px;
+      padding: 1.5rem 0;
     }
 
-    .saved-empty p { margin-top: 10px; }
+    .saved-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 320px;
+      overflow-y: auto;
+      padding-right: 2px;
+    }
+
+    .saved-list::-webkit-scrollbar { width: 4px; }
+    .saved-list::-webkit-scrollbar-track { background: transparent; }
+    .saved-list::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+
+    .saved-item {
+      background: var(--dark);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .saved-item:hover { border-color: #1a3a9a; }
+
+    .saved-item-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: #0d1b4b;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Rajdhani', sans-serif; font-size: 13px; font-weight: 700; color: #6a8fd8;
+      flex-shrink: 0;
+    }
+
+    .saved-item-info { flex: 1; min-width: 0; }
+    .saved-item-name { font-size: 13px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .saved-item-meta { font-size: 10px; color: #555; font-family: 'IBM Plex Mono', monospace; margin-top: 1px; }
+
+    .saved-item-serial {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      color: #444;
+      white-space: nowrap;
+    }
+
+    .saved-item-actions { display: flex; gap: 5px; flex-shrink: 0; }
+
+    .btn-load, .btn-del {
+      width: 28px; height: 28px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: transparent;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .btn-load { color: #6a8fd8; }
+    .btn-load:hover { background: #0d1b4b; border-color: #1a3a9a; }
+    .btn-del { color: #e05555; }
+    .btn-del:hover { background: rgba(224,85,85,0.1); border-color: #5a2020; }
 
     /* Toast */
     #toast {
       position: fixed;
-      bottom: 2rem;
-      left: 50%;
+      bottom: 2rem; left: 50%;
       transform: translateX(-50%) translateY(60px);
-      background: #1a6b4a;
-      color: #fff;
+      background: #0d1b4b;
+      color: #e8eeff;
       font-family: 'Nunito', sans-serif;
-      font-size: 13px;
-      font-weight: 700;
-      padding: 10px 24px;
+      font-size: 13px; font-weight: 700;
+      padding: 10px 22px;
       border-radius: 30px;
+      border: 1px solid #1a3a9a;
       opacity: 0;
       transition: all 0.3s ease;
       z-index: 999;
       pointer-events: none;
     }
-
     #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
     @media print {
       body { background: #fff; padding: 0; }
-      .page-header, .form-panel, .tabs { display: none !important; }
+      .page-header, .form-panel, .saved-panel { display: none !important; }
       .app-wrap { display: block; max-width: 100%; }
       .receipt-panel { border: none; border-radius: 0; background: #fff; }
     }
@@ -875,145 +589,142 @@
   <h1>Amber IT — Customer Receipt Generator</h1>
 </div>
 
-<!-- Tabs -->
-<div class="tabs">
-  <button class="tab-btn active" onclick="switchTab('generate')">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-    New Receipt
-  </button>
-  <button class="tab-btn" id="tab-saved-btn" onclick="switchTab('saved')">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-    Saved Receipts <span id="saved-tab-count" style="font-family:'IBM Plex Mono',monospace;font-size:10px;opacity:0.7;"></span>
-  </button>
-</div>
+<div class="app-wrap">
 
-<!-- GENERATE TAB -->
-<div class="tab-content active" id="tab-generate">
-  <div class="app-wrap">
+  <!-- ══ FORM ══ -->
+  <div class="form-panel">
+    <div class="form-panel-header">
+      <h2>✎ &nbsp;New Receipt</h2>
+      <button class="btn-clear" onclick="clearForm()">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+        Clear
+      </button>
+    </div>
 
-    <!-- FORM -->
-    <div class="form-panel">
-      <div class="form-panel-header">
-        <h2>✎ New Receipt</h2>
-        <button class="btn-clear" onclick="clearForm()">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-          Clear All
-        </button>
-      </div>
-
-      <!-- Customer -->
-      <div class="section-group">
-        <div class="section-group-title">Customer Info</div>
+    <!-- Serial -->
+    <div class="section-group">
+      <div class="section-group-title">Receipt Serial</div>
+      <div class="serial-row">
         <div class="field">
-          <label>Customer Name</label>
-          <input type="text" id="inp-name" placeholder="e.g. Md. Rahim Uddin"/>
+          <label>Serial No.</label>
+          <input type="text" id="inp-serial" readonly style="color:#6a8fd8;cursor:default;"/>
         </div>
-        <div class="field-row">
-          <div class="field">
-            <label>Customer ID (CID)</label>
-            <input type="text" id="inp-cid" placeholder="e.g. 330538"/>
-            <div class="hint">PPPoE user = CID</div>
-          </div>
-          <div class="field">
-            <label>Mobile Number</label>
-            <input type="text" id="inp-mobile" placeholder="e.g. 01712345678"/>
-          </div>
-        </div>
-        <div class="field">
-          <label>PPPoE Password</label>
-          <input type="text" id="inp-pppoe" placeholder="e.g. tapgse"/>
-          <div class="hint">Router pass = aitcid + CID</div>
-        </div>
-      </div>
-
-      <!-- Plan -->
-      <div class="section-group">
-        <div class="section-group-title">Internet Plan</div>
-        <div class="field">
-          <label>Select Package</label>
-          <select id="inp-plan" onchange="onPlanChange()">
-            <option value="">— Choose a plan —</option>
-            <option value="MINOR+|20 Mbps|500|OTC – 1000 Taka">MINOR+ — 20 Mbps — 500৳/mo</option>
-            <option value="JUNIOR+|30 Mbps|650|OTC Free">JUNIOR+ — 30 Mbps — 650৳/mo</option>
-            <option value="LEARNER+|50 Mbps|800|OTC Free">LEARNER+ — 50 Mbps — 800৳/mo</option>
-            <option value="BASIC+|100 Mbps|1000|OTC Free">BASIC+ — 100 Mbps — 1000৳/mo</option>
-            <option value="PRIMARY+|125 Mbps|1200|OTC Free">PRIMARY+ — 125 Mbps — 1200৳/mo</option>
-            <option value="DOMINANT+|150 Mbps|1500|OTC Free">DOMINANT+ — 150 Mbps — 1500৳/mo</option>
-            <option value="CONFIDENT+|200 Mbps|2000|OTC Free">CONFIDENT+ — 200 Mbps — 2000৳/mo</option>
-            <option value="POSITIVE+|250 Mbps|2500|OTC Free + 1 Public IP">POSITIVE+ — 250 Mbps — 2500৳/mo</option>
-          </select>
-          <div class="plan-preview" id="plan-preview">
-            <div>
-              <div class="plan-preview-name" id="pp-name">—</div>
-              <div class="plan-preview-speed" id="pp-speed">—</div>
-            </div>
-            <div class="plan-preview-price" id="pp-price">—</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ONU -->
-      <div class="section-group">
-        <div class="section-group-title">ONU / Device Info</div>
-        <div class="field">
-          <label>ONU Brand / Model</label>
-          <input type="text" id="inp-onu-model" placeholder="e.g. Huawei EG8145V5"/>
-        </div>
-        <div class="field-row">
-          <div class="field">
-            <label>Serial No.</label>
-            <input type="text" id="inp-onu-serial" placeholder="e.g. 48575443A123"/>
-          </div>
-          <div class="field">
-            <label>MAC / GPON</label>
-            <input type="text" id="inp-onu-mac" placeholder="e.g. A8:B1:C3:D4"/>
-          </div>
-        </div>
-        <div class="field">
-          <label>Installation Address</label>
-          <input type="text" id="inp-address" placeholder="e.g. House 12, Road 4, Mirpur"/>
-        </div>
-      </div>
-
-      <!-- Staff & Serial -->
-      <div class="section-group">
-        <div class="section-group-title">Staff & Receipt</div>
-        <div class="field">
-          <label>Served By</label>
-          <input type="text" id="inp-agent" placeholder="e.g. Mahbub Hossain"/>
-        </div>
-        <div class="field">
-          <label>Receipt Serial No.</label>
-          <div class="serial-row">
-            <input type="text" id="inp-serial" placeholder="Auto-generated or type manually"/>
-            <button class="btn-gen-serial" onclick="genSerial()">⚙ Generate</button>
-          </div>
-        </div>
-      </div>
-
-      <button class="btn-generate" onclick="generateReceipt()">⚡ GENERATE RECEIPT</button>
-
-      <div class="btn-row">
-        <button class="btn-secondary btn-save-receipt" onclick="saveReceipt()">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-          Save
-        </button>
-        <button class="btn-secondary" onclick="downloadImage()">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Image
-        </button>
-        <button class="btn-secondary" onclick="window.print()">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-          Print
+        <button class="btn-regen" onclick="regenSerial()" title="Generate new serial">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
         </button>
       </div>
     </div>
 
+    <!-- Customer -->
+    <div class="section-group">
+      <div class="section-group-title">Customer Info</div>
+      <div class="field">
+        <label>Customer Name</label>
+        <input type="text" id="inp-name" placeholder="e.g. Md. Rahim Uddin"/>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Customer ID (CID)</label>
+          <input type="text" id="inp-cid" placeholder="e.g. 330538"/>
+          <div class="hint">PPPoE = CID | Router = aitcid+CID</div>
+        </div>
+        <div class="field">
+          <label>Mobile Number</label>
+          <input type="text" id="inp-mobile" placeholder="e.g. 01XXXXXXXXX"/>
+        </div>
+      </div>
+      <div class="field">
+        <label>PPPoE Password</label>
+        <input type="text" id="inp-pppoe" placeholder="e.g. tapgse"/>
+      </div>
+    </div>
+
+    <!-- Plan -->
+    <div class="section-group">
+      <div class="section-group-title">Internet Plan</div>
+      <div class="field">
+        <label>Select Package</label>
+        <select id="inp-plan" onchange="onPlanChange()">
+          <option value="">— Choose a plan —</option>
+          <option value="MINOR+|20 Mbps|500|OTC – 1000 Taka">MINOR+ — 20 Mbps — 500৳/mo</option>
+          <option value="JUNIOR+|30 Mbps|650|OTC Free">JUNIOR+ — 30 Mbps — 650৳/mo</option>
+          <option value="LEARNER+|50 Mbps|800|OTC Free">LEARNER+ — 50 Mbps — 800৳/mo</option>
+          <option value="BASIC+|100 Mbps|1000|OTC Free">BASIC+ — 100 Mbps — 1000৳/mo</option>
+          <option value="PRIMARY+|125 Mbps|1200|OTC Free">PRIMARY+ — 125 Mbps — 1200৳/mo</option>
+          <option value="DOMINANT+|150 Mbps|1500|OTC Free">DOMINANT+ — 150 Mbps — 1500৳/mo</option>
+          <option value="CONFIDENT+|200 Mbps|2000|OTC Free">CONFIDENT+ — 200 Mbps — 2000৳/mo</option>
+          <option value="POSITIVE+|250 Mbps|2500|OTC Free + 1 Public IP">POSITIVE+ — 250 Mbps — 2500৳/mo</option>
+        </select>
+        <div class="plan-preview" id="plan-preview">
+          <div>
+            <div class="plan-preview-name" id="pp-name">—</div>
+            <div class="plan-preview-speed" id="pp-speed">—</div>
+          </div>
+          <div class="plan-preview-price" id="pp-price">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ONU -->
+    <div class="section-group">
+      <div class="section-group-title">ONU / Device Info</div>
+      <div class="field">
+        <label>ONU Brand / Model</label>
+        <input type="text" id="inp-onu-model" placeholder="e.g. Huawei EG8145V5"/>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Serial No.</label>
+          <input type="text" id="inp-onu-serial" placeholder="e.g. 48575443A123"/>
+        </div>
+        <div class="field">
+          <label>MAC / GPON</label>
+          <input type="text" id="inp-onu-mac" placeholder="e.g. A8:B1:C3"/>
+        </div>
+      </div>
+      <div class="field">
+        <label>Installation Address</label>
+        <input type="text" id="inp-address" placeholder="e.g. House 12, Road 4, Mirpur"/>
+      </div>
+    </div>
+
+    <!-- Staff -->
+    <div class="section-group">
+      <div class="section-group-title">Staff</div>
+      <div class="field">
+        <label>Served By</label>
+        <input type="text" id="inp-agent" placeholder="e.g. Mahbub Hossain"/>
+      </div>
+    </div>
+
+    <button class="btn-generate" onclick="generateReceipt()">⚡ GENERATE RECEIPT</button>
+
+    <div class="btn-row">
+      <button class="btn-secondary" onclick="saveAndDownload()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        Save Receipt
+      </button>
+      <button class="btn-secondary" onclick="downloadImage()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download Image
+      </button>
+    </div>
+    <div class="btn-row" style="margin-top:6px;">
+      <button class="btn-secondary" onclick="window.print()" style="grid-column:1/-1;">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Print / Save as PDF
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ RIGHT COLUMN ══ -->
+  <div class="right-col">
+
     <!-- RECEIPT -->
     <div class="receipt-panel">
       <div class="receipt-placeholder" id="placeholder">
-        <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#2e2e2e" stroke-width="1.2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-        <p style="color:#3a3a3a;font-size:13px;">Fill in the form and click<br><strong style="color:#1a6b4a;">Generate Receipt</strong></p>
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="1.2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        <p style="color:#444;font-size:12px;">Fill in the form and click<br><strong style="color:var(--amber);">Generate Receipt</strong></p>
       </div>
 
       <div id="receipt">
@@ -1031,10 +742,8 @@
             </div>
             <div class="rh-badge-col">
               <div class="rh-badge">Customer Receipt</div>
-              <div class="rh-meta">
-                <div id="r-serial-display">—</div>
-                <div id="r-date">—</div>
-              </div>
+              <div class="rh-serial" id="r-serial">—</div>
+              <div class="rh-date" id="r-date">—</div>
             </div>
           </div>
 
@@ -1043,11 +752,11 @@
           <!-- Contact bar -->
           <div class="rh-contact-bar">
             <div class="rh-contact-item">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#1a6b4a" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#1a3a9a" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
               <a class="rh-contact-link" href="https://www.amber-it.com" target="_blank">www.amber-it.com</a>
             </div>
             <div class="rh-contact-item">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#1a6b4a" stroke-width="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#1a3a9a" stroke-width="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
               <span>info@amber-it.com</span>
             </div>
           </div>
@@ -1058,19 +767,10 @@
             <!-- Customer -->
             <div class="rb-customer">
               <div class="rb-avatar" id="r-avatar">??</div>
-              <div>
+              <div style="flex:1;min-width:0;">
                 <div class="rb-cust-name" id="r-name">—</div>
-                <div class="rb-cust-sub">CID: <span id="r-cid">—</span></div>
+                <div class="rb-cust-meta">CID: <span id="r-cid">—</span> &nbsp;|&nbsp; 📱 <span id="r-mobile">—</span></div>
                 <div class="rb-cust-addr" id="r-address-line"></div>
-              </div>
-            </div>
-
-            <!-- Mobile -->
-            <div class="rb-mobile-chip" id="r-mobile-chip" style="display:none;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1a6b4a" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="3"/></svg>
-              <div>
-                <div class="rb-mobile-label">Customer Mobile</div>
-                <div class="rb-mobile-num" id="r-mobile">—</div>
               </div>
             </div>
 
@@ -1078,7 +778,7 @@
             <div class="rb-section-title">Internet Package</div>
             <div class="plan-card" id="r-plan-card" style="display:none;">
               <div class="plan-card-header">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.75)" stroke-width="2.5"><path d="M1.42 9a16 16 0 0121.16 0"/><path d="M5 12.55a11 11 0 0114.08 0"/><path d="M10.54 16.1a6 6 0 012.92 0"/><line x1="12" y1="20" x2="12.01" y2="20" stroke-width="3"/></svg>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="2.5"><path d="M1.42 9a16 16 0 0121.16 0"/><path d="M5 12.55a11 11 0 0114.08 0"/><path d="M10.54 16.1a6 6 0 012.92 0"/><line x1="12" y1="20" x2="12.01" y2="20" stroke-width="3"/></svg>
                 <span class="plan-card-header-title">Selected Package</span>
               </div>
               <div class="plan-card-body">
@@ -1099,12 +799,12 @@
               </div>
             </div>
 
-            <!-- Connection -->
+            <!-- Connection Details -->
             <div class="rb-section-title">Connection Details</div>
             <div class="rb-grid-2">
               <div class="info-card">
                 <div class="info-card-header">
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#4ecb8a" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#6a8fd8" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
                   <span class="info-card-title">Router Login</span>
                 </div>
                 <div class="info-card-body">
@@ -1117,7 +817,7 @@
 
               <div class="info-card">
                 <div class="info-card-header">
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#4ecb8a" stroke-width="2.5" stroke-linecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#6a8fd8" stroke-width="2.5" stroke-linecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                   <span class="info-card-title">PPPoE Information</span>
                 </div>
                 <div class="info-card-body">
@@ -1138,36 +838,36 @@
             <div class="rb-grid-3">
               <div class="info-card">
                 <div class="info-card-header">
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#4ecb8a" stroke-width="2.5" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#6a8fd8" stroke-width="2.5" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
                   <span class="info-card-title">ONU Model</span>
                 </div>
                 <div class="info-card-body">
                   <div class="info-row">
-                    <span class="info-val" id="r-onu-model" style="text-align:left;font-size:11px;">—</span>
+                    <span class="info-val" id="r-onu-model" style="text-align:left;font-size:10px;">—</span>
                   </div>
                 </div>
               </div>
 
               <div class="info-card">
                 <div class="info-card-header">
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#4ecb8a" stroke-width="2.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#6a8fd8" stroke-width="2.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
                   <span class="info-card-title">Serial No.</span>
                 </div>
                 <div class="info-card-body">
                   <div class="info-row">
-                    <span class="info-val" id="r-onu-serial" style="text-align:left;font-size:10px;word-break:break-all;">—</span>
+                    <span class="info-val" id="r-onu-serial" style="text-align:left;font-size:9px;word-break:break-all;">—</span>
                   </div>
                 </div>
               </div>
 
               <div class="info-card">
                 <div class="info-card-header">
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#4ecb8a" stroke-width="2.5" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="3"/></svg>
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#6a8fd8" stroke-width="2.5" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="3"/></svg>
                   <span class="info-card-title">MAC / GPON</span>
                 </div>
                 <div class="info-card-body">
                   <div class="info-row">
-                    <span class="info-val" id="r-onu-mac" style="text-align:left;font-size:10px;word-break:break-all;">—</span>
+                    <span class="info-val" id="r-onu-mac" style="text-align:left;font-size:9px;word-break:break-all;">—</span>
                   </div>
                 </div>
               </div>
@@ -1177,21 +877,21 @@
             <div class="rb-section-title">Call Centre</div>
             <div class="rb-contacts-grid">
               <div class="contact-chip">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1a6b4a" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1a3a9a" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
                 <div>
                   <div class="contact-chip-label">Helpline 1</div>
                   <div class="contact-chip-num">09611-123123</div>
                 </div>
               </div>
               <div class="contact-chip">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1a6b4a" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1a3a9a" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
                 <div>
                   <div class="contact-chip-label">Helpline 2</div>
                   <div class="contact-chip-num">09611-200700</div>
                 </div>
               </div>
               <div class="contact-chip">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1a6b4a" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1a3a9a" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
                 <div>
                   <div class="contact-chip-label">Support</div>
                   <div class="contact-chip-num">24/7 Online</div>
@@ -1203,7 +903,7 @@
             <div class="rb-section-title">WhatsApp Complaint</div>
             <div class="wa-chip">
               <div class="wa-dot">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="white">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
                   <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
                   <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2.546 21.5l4.432-.872A9.96 9.96 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18a8 8 0 01-4.078-1.122l-.292-.174-3.03.596.617-2.966-.19-.305A8 8 0 1112 20z"/>
                 </svg>
@@ -1225,31 +925,24 @@
 
         </div><!-- /receipt-card -->
       </div><!-- /receipt -->
-
     </div><!-- /receipt-panel -->
 
-  </div><!-- /app-wrap -->
-</div><!-- /tab-generate -->
+    <!-- ══ SAVED RECEIPTS ══ -->
+    <div class="saved-panel">
+      <div class="saved-panel-header">
+        <div class="saved-panel-title">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6a8fd8" stroke-width="2.5" stroke-linecap="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          Saved Receipts
+          <span class="saved-count" id="saved-count">0</span>
+        </div>
+        <button class="btn-clear-all" onclick="clearAllSaved()">Clear All</button>
+      </div>
+      <div class="saved-empty" id="saved-empty">No saved receipts yet.</div>
+      <div class="saved-list" id="saved-list"></div>
+    </div>
 
-<!-- SAVED RECEIPTS TAB -->
-<div class="tab-content" id="tab-saved">
-  <div class="saved-wrap">
-    <div class="saved-header">
-      <div>
-        <h2>📁 Saved Receipts</h2>
-        <div class="saved-count" id="saved-count-label">0 receipts saved</div>
-      </div>
-      <button class="btn-clear-all" onclick="clearAllSaved()">🗑 Clear All</button>
-    </div>
-    <input class="saved-search" type="text" placeholder="🔍  Search by name, CID, serial, mobile..." oninput="renderSaved(this.value)"/>
-    <div class="saved-grid" id="saved-grid">
-      <div class="saved-empty">
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2e2e2e" stroke-width="1.2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/></svg>
-        <p style="color:#444;">No receipts saved yet.<br>Generate and save a receipt first.</p>
-      </div>
-    </div>
-  </div>
-</div>
+  </div><!-- /right-col -->
+</div><!-- /app-wrap -->
 
 <div id="toast">✓ Done!</div>
 
@@ -1258,17 +951,28 @@
   const LOGO_B64 = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCABBAHcDASIAAhEBAxEB/8QAHAABAAICAwEAAAAAAAAAAAAAAAMFBAYBAgcI/8QAPhAAAQMDAQMGCggHAQAAAAAAAQACAwQFERIGEyEHFDFBYXEiNVFyc4GRobHBIyQyMzQ2svEVN1J0gsLS8P/EABsBAQACAwEBAAAAAAAAAAAAAAABAwQFBgcC/8QAMxEAAgEDAQQGCAcAAAAAAAAAAAECAwQRBRIhMXETQVGBscEGIiMyQmFykTM1kqGy0fD/2gAMAwEAAhEDEQA/APjJERAEREARFy0Fzg0DJJwAgNw5PbRHM91yqYw4NdphBHDPWVebf2RlbaXXGCMc5phqcQOLmdfs6fasdtyo9m7VSwzBz36QAxmMnylbXYa2ku1A2ogOuKQEOa4cR5QQtTOpPb6XqPW9N02ynZvS5NdI45fam+vu8Dw9FZ7UW11pvtVQkHQx+Yyeth4t9yrFtU01lHlNejOhVlSmsOLafNBERSVBERAEREAREQBERAFn7PQc4vNMwjID9R7hx+SwFZ2J+4jravoMcBa3znEAKuq2oPBmafGMrmG1wTy+S3v9kdNoK0111llzljToj80f+yr3kyu5ob0KKV+IKshoz1P6j6+j2LUl2je6ORsjHFrmkFpHUQkqScNgutdUrW98r1P1s5fz7V9tx6HyxW3HMrsxvTmCQj2t+a86Xsl007Tcm752AGUwiUAdUjOke4j1rxtVWssw2XxRvfTS2hC+jc0vcqxUl5+T7wiIsk5AIiIAiIgCIiAIiIApGSyNhfE12GPwXDy46FGuQCSAOkpjJKk470cIp62mdSzbpzmuOAfBUCEHqPIzcN7QVlqkOd04SsB6NLuB9/xXnu0NEbdfK2ixgQzOa3tbngfZhdrBeK2x1/PKFzBIWFhDm5BB/ZTbX3WG9XuS4wwui3kbA9p/qDQD8FjRpyjWclwfidNeanQvNGo0JP2tKTS+cXnhywkVCIiyTmQi2Ot2YFHT2qWouEcfPyNWpuBEMAkk549KsaLYilrZHR0e0NJUOaMuEbdRA9RVTrQSzk2tPRL2pPYjDfu3ZWd6yuvsNLRbZJstao2ku2poOHDAAJ+KJ00P8mQ9Gu47ml+qP9lBSPpmQZFM6oqCeIcPBA9Sn3TKiknfJSCnkibqaWggHswVNXc5jbFFb2u3Jb9qMcSe0pNvobNNv5jJI5wBBdnT2K01hi2qngkhqZageAxvT5FJRClrHvphStjGklrwTqHeujPorC89csuPUP2S0/R09ZP1tj0jvP7IDmnfR86bStpWyMc7TvHHwj2qJlO1t4FO0ktbL7ulLIzXcYyehuXH2Ka1va+6yVL3ANbqeSe3h80B2uNTTR10n1ds7s4e554DsCiraRjp6c0w0tqACGnqXSWhqnVbmCNx1Ozrx4OPLlZctTDHc6WMOBjgGgu6skYQEU4hpH7mGjE5b9t8jScnsUVwgj5vFVRRmIPJa5h6j2LIq/4o2qc2J0zmE5YW9GFj17ajeRQTVO9ccZbnOkoDIlho6akp5Zo9Ty3OgHGo9vYsFjRWV8ccUYj3r2sa1vVkgKe+vzW7sfZjaGj2LM2GpudbV0EeMhsm8P8AiC75L5nLZi2X2tHp68KS+Jpfdl1ysStFxoaFnBsFPnHkJOPgApeTj6nYr3dTw3ceGHtDST/qqXlDqec7W1hzwjLYx6gM+/KuYfqHJRI7ofWTcO4uA+DfesVrFGMe3B1NOsp6xcXPVTU2u5bKNGREWYccbBZvFZ9arHeLZPTIiEvgcTeK4PPK4pvF9T3t+aIgFq+/d5hUMP3U/mD9QREILyDxGPMWvIiEs2S1eKx3KhZ+Ob6T5oiBna4fjJO9X3Jn+a4vRSfBEVVb8OXI2WjfmFH6l4lVtP8AmS5/3cv6itlv38srT6T/AKRFXP4OfkbC0969+mX8kaSiIsk5w//Z';
   document.getElementById('logo-img').src = LOGO_B64;
 
-  /* ── Tabs ── */
-  function switchTab(tab) {
-    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-    document.getElementById('tab-' + tab).classList.add('active');
-    const btns = document.querySelectorAll('.tab-btn');
-    btns[tab === 'generate' ? 0 : 1].classList.add('active');
-    if (tab === 'saved') renderSaved('');
+  /* ── Helpers ── */
+  function getInitials(name) {
+    if (!name) return '??';
+    return name.trim().split(/\s+/).map(w => w[0].toUpperCase()).slice(0,2).join('');
   }
 
-  /* ── Plan change ── */
+  function genSerial() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let s = 'AIT-';
+    for (let i=0;i<4;i++) s += chars[Math.floor(Math.random()*chars.length)];
+    s += '-';
+    for (let i=0;i<4;i++) s += chars[Math.floor(Math.random()*chars.length)];
+    return s;
+  }
+
+  function regenSerial() {
+    document.getElementById('inp-serial').value = genSerial();
+  }
+
+  /* Init serial on load */
+  regenSerial();
+
   function onPlanChange() {
     const sel = document.getElementById('inp-plan');
     const preview = document.getElementById('plan-preview');
@@ -1280,40 +984,21 @@
     preview.classList.add('show');
   }
 
-  /* ── Generate serial ── */
-  function genSerial() {
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789';
-    const part  = n => Array.from({length:n}, () => chars[Math.floor(Math.random()*chars.length)]).join('');
-    const serial = 'AIT-' + part(4) + '-' + part(4);
-    document.getElementById('inp-serial').value = serial;
-  }
-
-  /* Auto-generate serial on load */
-  genSerial();
-
-  /* ── Clear form ── */
   function clearForm() {
-    ['inp-name','inp-cid','inp-mobile','inp-pppoe','inp-onu-model',
-     'inp-onu-serial','inp-onu-mac','inp-address','inp-agent'].forEach(id => {
+    ['inp-name','inp-cid','inp-mobile','inp-pppoe','inp-onu-model','inp-onu-serial','inp-onu-mac','inp-address','inp-agent'].forEach(id => {
       document.getElementById(id).value = '';
     });
     document.getElementById('inp-plan').value = '';
     document.getElementById('plan-preview').classList.remove('show');
-    genSerial();
-    document.getElementById('placeholder').style.display = 'flex';
-    const r = document.getElementById('receipt');
-    r.classList.remove('visible');
-    r.style.display = 'none';
+    regenSerial();
+    // Hide receipt
+    document.getElementById('receipt').style.display = 'none';
+    document.getElementById('receipt').classList.remove('visible');
+    document.getElementById('placeholder').style.display = '';
     showToast('Form cleared');
   }
 
-  /* ── Initials ── */
-  function getInitials(name) {
-    if (!name) return '??';
-    return name.trim().split(/\s+/).map(w => w[0].toUpperCase()).slice(0,2).join('');
-  }
-
-  /* ── Generate receipt ── */
+  /* ── Generate ── */
   function generateReceipt() {
     const name     = document.getElementById('inp-name').value.trim();
     const cid      = document.getElementById('inp-cid').value.trim();
@@ -1324,8 +1009,8 @@
     const onuSer   = document.getElementById('inp-onu-serial').value.trim();
     const onuMac   = document.getElementById('inp-onu-mac').value.trim();
     const address  = document.getElementById('inp-address').value.trim();
-    const planVal  = document.getElementById('inp-plan').value;
     const serial   = document.getElementById('inp-serial').value.trim();
+    const planVal  = document.getElementById('inp-plan').value;
 
     if (!name || !cid || !pppoe) {
       alert('Please fill in Customer Name, CID, and PPPoE Password.');
@@ -1335,26 +1020,19 @@
     document.getElementById('r-avatar').textContent      = getInitials(name);
     document.getElementById('r-name').textContent        = name;
     document.getElementById('r-cid').textContent         = cid;
+    document.getElementById('r-mobile').textContent      = mobile || 'N/A';
     document.getElementById('r-router-pass').textContent = 'aitcid' + cid;
     document.getElementById('r-pppoe-user').textContent  = cid;
     document.getElementById('r-pppoe-pass').textContent  = pppoe;
     document.getElementById('r-agent').textContent       = agent || 'Amber IT Staff';
-    document.getElementById('r-address-line').textContent = address ? '📍 ' + address : '';
+    document.getElementById('r-serial').textContent      = serial ? '# ' + serial : '';
     document.getElementById('r-onu-model').textContent   = onuModel || '—';
-    document.getElementById('r-onu-serial').textContent  = onuSer || '—';
-    document.getElementById('r-onu-mac').textContent     = onuMac || '—';
-    document.getElementById('r-serial-display').textContent = serial ? 'SN: ' + serial : '';
+    document.getElementById('r-onu-serial').textContent  = onuSer   || '—';
+    document.getElementById('r-onu-mac').textContent     = onuMac   || '—';
 
-    // Mobile
-    const mChip = document.getElementById('r-mobile-chip');
-    if (mobile) {
-      document.getElementById('r-mobile').textContent = mobile;
-      mChip.style.display = 'flex';
-    } else {
-      mChip.style.display = 'none';
-    }
+    const addrEl = document.getElementById('r-address-line');
+    addrEl.textContent = address ? '📍 ' + address : '';
 
-    // Plan
     const planCard = document.getElementById('r-plan-card');
     if (planVal) {
       const [pName, pSpeed, pPrice, pOtc] = planVal.split('|');
@@ -1378,137 +1056,123 @@
     receipt.style.display = 'block';
   }
 
-  /* ── Save receipt ── */
+  /* ── Saved receipts (localStorage) ── */
+  function getSaved() {
+    try { return JSON.parse(localStorage.getItem('amberit_receipts') || '[]'); }
+    catch(e) { return []; }
+  }
+
+  function putSaved(arr) {
+    localStorage.setItem('amberit_receipts', JSON.stringify(arr));
+  }
+
+  function renderSaved() {
+    const arr = getSaved();
+    document.getElementById('saved-count').textContent = arr.length;
+    const emptyEl = document.getElementById('saved-empty');
+    const listEl  = document.getElementById('saved-list');
+    if (arr.length === 0) {
+      emptyEl.style.display = '';
+      listEl.innerHTML = '';
+      return;
+    }
+    emptyEl.style.display = 'none';
+    listEl.innerHTML = arr.map((r,i) => `
+      <div class="saved-item">
+        <div class="saved-item-avatar">${getInitials(r.name)}</div>
+        <div class="saved-item-info">
+          <div class="saved-item-name">${r.name}</div>
+          <div class="saved-item-meta">CID: ${r.cid} &nbsp;|&nbsp; ${r.plan || 'No plan'}</div>
+        </div>
+        <div class="saved-item-serial">${r.serial || ''}</div>
+        <div class="saved-item-actions">
+          <button class="btn-load" title="Load" onclick="loadReceipt(${i})">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+          </button>
+          <button class="btn-del" title="Delete" onclick="deleteReceipt(${i})">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+          </button>
+        </div>
+      </div>
+    `).join('');
+  }
+
   function saveReceipt() {
     const name   = document.getElementById('inp-name').value.trim();
     const cid    = document.getElementById('inp-cid').value.trim();
-    const mobile = document.getElementById('inp-mobile').value.trim();
-    const pppoe  = document.getElementById('inp-pppoe').value.trim();
-    const agent  = document.getElementById('inp-agent').value.trim();
-    const onuModel = document.getElementById('inp-onu-model').value.trim();
-    const onuSer   = document.getElementById('inp-onu-serial').value.trim();
-    const onuMac   = document.getElementById('inp-onu-mac').value.trim();
-    const address  = document.getElementById('inp-address').value.trim();
-    const planVal  = document.getElementById('inp-plan').value;
-    const serial   = document.getElementById('inp-serial').value.trim();
+    if (!name || !cid) { alert('Generate a receipt first before saving.'); return; }
 
-    if (!name || !cid) { alert('Please fill in at least Customer Name and CID.'); return; }
+    const planVal = document.getElementById('inp-plan').value;
+    const planName = planVal ? planVal.split('|')[0] : '';
 
-    const savedList = getSaved();
-    const entry = {
-      id: Date.now(),
-      serial, name, cid, mobile, pppoe, agent,
-      onuModel, onuSer, onuMac, address, planVal,
-      date: new Date().toLocaleString('en-GB', {
-        day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'
-      })
+    const record = {
+      serial:   document.getElementById('inp-serial').value.trim(),
+      name,
+      cid,
+      mobile:   document.getElementById('inp-mobile').value.trim(),
+      pppoe:    document.getElementById('inp-pppoe').value.trim(),
+      plan:     planName,
+      planVal,
+      onuModel: document.getElementById('inp-onu-model').value.trim(),
+      onuSer:   document.getElementById('inp-onu-serial').value.trim(),
+      onuMac:   document.getElementById('inp-onu-mac').value.trim(),
+      address:  document.getElementById('inp-address').value.trim(),
+      agent:    document.getElementById('inp-agent').value.trim(),
+      savedAt:  new Date().toISOString()
     };
 
-    savedList.unshift(entry);
-    localStorage.setItem('ait_receipts', JSON.stringify(savedList));
-    updateSavedCount();
+    const arr = getSaved();
+    // prevent duplicate serial
+    const idx = arr.findIndex(r => r.serial && r.serial === record.serial);
+    if (idx >= 0) arr[idx] = record; else arr.unshift(record);
+    putSaved(arr);
+    renderSaved();
     showToast('✓ Receipt saved!');
   }
 
-  /* ── Load a saved receipt into the form ── */
-  function loadReceipt(id) {
-    const entry = getSaved().find(r => r.id === id);
-    if (!entry) return;
-
-    document.getElementById('inp-name').value      = entry.name || '';
-    document.getElementById('inp-cid').value       = entry.cid || '';
-    document.getElementById('inp-mobile').value    = entry.mobile || '';
-    document.getElementById('inp-pppoe').value     = entry.pppoe || '';
-    document.getElementById('inp-agent').value     = entry.agent || '';
-    document.getElementById('inp-onu-model').value = entry.onuModel || '';
-    document.getElementById('inp-onu-serial').value= entry.onuSer || '';
-    document.getElementById('inp-onu-mac').value   = entry.onuMac || '';
-    document.getElementById('inp-address').value   = entry.address || '';
-    document.getElementById('inp-plan').value      = entry.planVal || '';
-    document.getElementById('inp-serial').value    = entry.serial || '';
+  function loadReceipt(i) {
+    const r = getSaved()[i];
+    if (!r) return;
+    document.getElementById('inp-serial').value    = r.serial  || '';
+    document.getElementById('inp-name').value      = r.name    || '';
+    document.getElementById('inp-cid').value       = r.cid     || '';
+    document.getElementById('inp-mobile').value    = r.mobile  || '';
+    document.getElementById('inp-pppoe').value     = r.pppoe   || '';
+    document.getElementById('inp-plan').value      = r.planVal || '';
+    document.getElementById('inp-onu-model').value = r.onuModel|| '';
+    document.getElementById('inp-onu-serial').value= r.onuSer  || '';
+    document.getElementById('inp-onu-mac').value   = r.onuMac  || '';
+    document.getElementById('inp-address').value   = r.address || '';
+    document.getElementById('inp-agent').value     = r.agent   || '';
     onPlanChange();
-    switchTab('generate');
     generateReceipt();
     showToast('✓ Receipt loaded!');
   }
 
-  /* ── Delete saved receipt ── */
-  function deleteReceipt(id) {
-    const list = getSaved().filter(r => r.id !== id);
-    localStorage.setItem('ait_receipts', JSON.stringify(list));
-    renderSaved(document.querySelector('.saved-search')?.value || '');
-    updateSavedCount();
-    showToast('Deleted');
+  function deleteReceipt(i) {
+    const arr = getSaved();
+    arr.splice(i,1);
+    putSaved(arr);
+    renderSaved();
+    showToast('Receipt deleted');
   }
 
-  /* ── Clear all saved ── */
   function clearAllSaved() {
-    if (!confirm('Delete ALL saved receipts? This cannot be undone.')) return;
-    localStorage.removeItem('ait_receipts');
-    renderSaved('');
-    updateSavedCount();
+    if (!confirm('Delete all saved receipts?')) return;
+    localStorage.removeItem('amberit_receipts');
+    renderSaved();
     showToast('All receipts cleared');
   }
 
-  /* ── Get saved from localStorage ── */
-  function getSaved() {
-    try { return JSON.parse(localStorage.getItem('ait_receipts')) || []; }
-    catch { return []; }
-  }
-
-  /* ── Update badge ── */
-  function updateSavedCount() {
-    const n = getSaved().length;
-    document.getElementById('saved-tab-count').textContent = n ? '(' + n + ')' : '';
-    document.getElementById('saved-count-label').textContent = n + ' receipt' + (n !== 1 ? 's' : '') + ' saved';
-  }
-
-  /* ── Render saved grid ── */
-  function renderSaved(query) {
-    const grid = document.getElementById('saved-grid');
-    let list = getSaved();
-    if (query) {
-      const q = query.toLowerCase();
-      list = list.filter(r =>
-        (r.name||'').toLowerCase().includes(q) ||
-        (r.cid||'').toLowerCase().includes(q) ||
-        (r.serial||'').toLowerCase().includes(q) ||
-        (r.mobile||'').toLowerCase().includes(q)
-      );
-    }
-
-    if (!list.length) {
-      grid.innerHTML = `<div class="saved-empty">
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2e2e2e" stroke-width="1.2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/></svg>
-        <p style="color:#444;">${query ? 'No receipts match your search.' : 'No receipts saved yet.<br>Generate and save a receipt first.'}</p>
-      </div>`;
+  function saveAndDownload() {
+    if (!document.getElementById('receipt').classList.contains('visible')) {
+      alert('Please generate a receipt first.');
       return;
     }
-
-    grid.innerHTML = list.map(r => {
-      const planName = r.planVal ? r.planVal.split('|')[0] : null;
-      return `
-        <div class="saved-card">
-          <div class="saved-card-header">
-            <div class="saved-card-serial">${r.serial || 'No Serial'}</div>
-            <div class="saved-card-date">${r.date}</div>
-          </div>
-          <div class="saved-card-body">
-            <div class="saved-card-name">${r.name}</div>
-            <div class="saved-card-info">
-              CID: ${r.cid}${r.mobile ? ' &nbsp;|&nbsp; 📱 ' + r.mobile : ''}<br>
-              ${r.address ? '📍 ' + r.address + '<br>' : ''}
-              ${r.agent ? 'Served by: ' + r.agent : ''}
-            </div>
-            ${planName ? `<div class="saved-card-plan">${planName}</div>` : ''}
-          </div>
-          <div class="saved-card-footer">
-            <button class="btn-load" onclick="loadReceipt(${r.id})">↩ Load & Print</button>
-            <button class="btn-delete" onclick="deleteReceipt(${r.id})">🗑</button>
-          </div>
-        </div>`;
-    }).join('');
+    saveReceipt();
   }
+
+  renderSaved();
 
   /* ── Toast ── */
   function showToast(msg) {
@@ -1524,23 +1188,18 @@
       alert('Please generate a receipt first.');
       return;
     }
-    const name   = document.getElementById('r-name').textContent.replace(/\s+/g,'_') || 'receipt';
-    const cid    = document.getElementById('r-cid').textContent || '';
-    const serial = document.getElementById('inp-serial').value.trim().replace(/[^A-Z0-9\-]/gi,'') || '';
+    const name = document.getElementById('r-name').textContent.replace(/\s+/g,'_') || 'receipt';
+    const cid  = document.getElementById('r-cid').textContent || '';
     html2canvas(document.getElementById('receipt-card'), {
-      scale:2, useCORS:true, backgroundColor:'#ffffff', logging:false
+      scale:2, useCORS:true, backgroundColor:'#f0f4ff', logging:false
     }).then(canvas => {
       const link = document.createElement('a');
-      link.download = 'AmberIT_' + (serial||name) + '_CID' + cid + '.png';
+      link.download = 'AmberIT_Receipt_' + name + '_CID' + cid + '.png';
       link.href = canvas.toDataURL('image/png');
       link.click();
       showToast('✓ Image downloaded!');
-    }).catch(() => alert('Download failed. Try Print instead.'));
+    }).catch(() => alert('Download failed. Try Print/PDF instead.'));
   }
-
-  /* ── Init ── */
-  updateSavedCount();
 </script>
-
 </body>
 </html>
